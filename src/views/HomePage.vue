@@ -1,6024 +1,2055 @@
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-      <div class="app-shell">
+      <div class="dashboard">
 
-        <!-- ==================================================
-             HEADER
-        =================================================== -->
-        <header class="app-header">
-          <div class="brand-area">
-            <div class="brand-logo">✓</div>
-
-            <div class="brand-copy">
-              <h1>
-                Assignment <span>Tracker</span>
-              </h1>
-
-              <p>
-                Student Productivity Dashboard
-              </p>
-            </div>
-          </div>
-
-          <div class="header-date">
-            <div class="date-icon">▦</div>
-
-            <div>
-              <span>{{ currentDay }}</span>
-              <strong>{{ currentDateLabel }}</strong>
-            </div>
+        <!-- ================= MOBILE HEADER ================= -->
+        <header class="mobile-brand-header">
+          <div class="mobile-brand">
+            <div class="mobile-brand-icon">✓</div>
+            <strong>Assignment Tracker</strong>
           </div>
         </header>
 
-
-        <!-- ==================================================
-             HERO
-        =================================================== -->
-        <section class="hero-section">
-
-          <div class="hero-copy">
-
-            <div class="hero-label">
-              <span>◆</span>
-              BUILT FOR STUDENTS
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="sidebar">
+          <div>
+            <div class="brand">
+              <div class="brand-icon">✓</div>
+              <div>
+                <h2>Assignment</h2>
+                <h2 class="blue">Tracker</h2>
+              </div>
             </div>
 
-            <h2>
-              Plan Smarter.
-              <span>Stay Ahead.</span>
-            </h2>
+            <nav class="nav-menu">
+              <button class="nav-item active" @click="goTo('/home')">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+              </button>
 
-            <p>
-              Organize assignments, set priorities, track deadlines,
-              and stay on top of your academic tasks—all in one place.
-            </p>
+              <button class="nav-item" @click="goTo('/tasks')">
+                <span class="nav-icon">☷</span>
+                <span>My Tasks</span>
+              </button>
 
+              <button class="nav-item" @click="goTo('/add-task')">
+                <span class="nav-icon">＋</span>
+                <span>Add Task</span>
+              </button>
 
-            <div class="hero-features">
-
-              <span class="feature blue-feature">
-                <span>★</span>
-                Smart Priority
-              </span>
-
-              <span class="feature teal-feature">
-                <span>✓</span>
-                Stay Organized
-              </span>
-
-              <span class="feature amber-feature">
-                <span>◷</span>
-                Track Deadlines
-              </span>
-
-              <span class="feature violet-feature">
-                <span>▣</span>
-                Study Better
-              </span>
-
-            </div>
-
+              <button class="nav-item" @click="goTo('/subjects')">
+                <span class="nav-icon">▤</span>
+                <span>Subjects</span>
+              </button>
+            </nav>
           </div>
 
+          <div class="sidebar-footer">
+            <strong>Student Productivity</strong>
+            <p>Stay organized. Stay ahead.</p>
+          </div>
+        </aside>
 
-          <!-- MINI APPLICATION PREVIEW -->
-          <div class="hero-preview">
+        <!-- ================= MAIN ================= -->
+        <main class="main-content">
 
-            <div class="preview-decoration decoration-one"></div>
-            <div class="preview-decoration decoration-two"></div>
+          <!-- HEADER -->
+          <header class="top-header">
+            <div>
+              <p class="eyebrow">STUDENT PRODUCTIVITY DASHBOARD</p>
+              <h1>Dashboard</h1>
+              <p class="subtitle">
+                Stay organized, manage your assignments, and keep track of your progress.
+              </p>
+            </div>
 
-            <div class="preview-window">
+            <div class="date-card">
+              <div class="calendar-icon">▦</div>
+              <div>
+                <strong>{{ currentDay }}</strong>
+                <span>{{ currentDate }}</span>
+              </div>
+            </div>
+          </header>
 
-              <div class="preview-topbar">
+          <!-- HERO -->
+          <section class="hero">
+            <div class="hero-content">
+              <span class="student-badge">◆ BUILT FOR STUDENTS</span>
 
+              <h2>
+                Plan Smarter.<br />
+                <span>Stay Ahead.</span>
+              </h2>
+
+              <p>
+                Organize assignments, set priorities, track deadlines,
+                and stay on top of your academic tasks—all in one place.
+              </p>
+
+              <div class="hero-tags">
+                <span class="tag blue-tag">★ Smart Priority</span>
+                <span class="tag green-tag">✓ Stay Organized</span>
+                <span class="tag yellow-tag">◷ Track Deadlines</span>
+                <span class="tag purple-tag">▣ Study Better</span>
+              </div>
+            </div>
+
+            <!-- HERO PROGRESS CARD -->
+            <div class="hero-progress">
+              <div class="progress-title">
                 <div>
-                  <span class="preview-label">
-                    TODAY
-                  </span>
-
-                  <strong>
-                    My Tasks
-                  </strong>
+                  <small>TODAY</small>
+                  <h3>My Tasks</h3>
                 </div>
 
-                <div class="preview-count">
-                  {{ assignments.length }}
+                <div class="task-number">
+                  {{ totalAssignments }}
                 </div>
-
               </div>
 
+              <div class="overall-row">
+                <span>Overall progress</span>
+                <strong>{{ progressPercentage }}%</strong>
+              </div>
 
-              <div class="preview-progress">
+              <div class="progress-track">
+                <div
+                  class="progress-fill"
+                  :style="{ width: progressPercentage + '%' }"
+                ></div>
+              </div>
 
-                <div class="preview-progress-info">
+              <div class="mini-feature feature-blue">
+                <div class="mini-icon">✓</div>
+                <div>
+                  <strong>Stay organized</strong>
+                  <span>Manage your schoolwork</span>
+                </div>
+              </div>
 
-                  <span>
-                    Overall progress
-                  </span>
+              <div class="mini-feature feature-yellow">
+                <div class="mini-icon">◷</div>
+                <div>
+                  <strong>Meet deadlines</strong>
+                  <span>Track important tasks</span>
+                </div>
+              </div>
 
-                  <strong>
-                    {{ completionPercentage }}%
-                  </strong>
+              <div class="mini-feature feature-green">
+                <div class="mini-icon">★</div>
+                <div>
+                  <strong>Reach your goals</strong>
+                  <span>One task at a time</span>
+                </div>
+              </div>
+            </div>
+          </section>
 
+          <!-- ================= STATISTICS ================= -->
+          <section class="stats-grid">
+
+            <div class="stat-card total-card">
+              <div class="stat-icon">▣</div>
+              <div>
+                <span class="stat-label">TOTAL ASSIGNMENTS</span>
+                <h3>{{ totalAssignments }}</h3>
+                <p>All academic tasks</p>
+              </div>
+            </div>
+
+            <div class="stat-card pending-card">
+              <div class="stat-icon">◷</div>
+              <div>
+                <span class="stat-label">PENDING</span>
+                <h3>{{ pendingCount }}</h3>
+                <p>Need your attention</p>
+              </div>
+            </div>
+
+            <div class="stat-card progress-card">
+              <div class="stat-icon">↗</div>
+              <div>
+                <span class="stat-label">IN PROGRESS</span>
+                <h3>{{ inProgressCount }}</h3>
+                <p>Currently working</p>
+              </div>
+            </div>
+
+            <div class="stat-card completed-card">
+              <div class="stat-icon">✓</div>
+              <div>
+                <span class="stat-label">COMPLETED</span>
+                <h3>{{ completedCount }}</h3>
+                <p>Great work!</p>
+              </div>
+            </div>
+
+          </section>
+
+          <!-- MOTIVATION -->
+          <section class="motivation-banner">
+            <div class="motivation-icon">★</div>
+            <div>
+              <strong>Stay Organized. Save Time. Achieve More.</strong>
+              <p>Small progress every day leads to bigger results.</p>
+            </div>
+            <span class="sparkle">✦</span>
+          </section>
+
+          <!-- ================= DASHBOARD CONTENT ================= -->
+          <section class="dashboard-grid">
+
+            <!-- UPCOMING DEADLINES -->
+            <div class="panel deadlines-panel">
+              <div class="panel-header">
+                <div>
+                  <p class="panel-eyebrow">KEEP ON TRACK</p>
+                  <h2>Upcoming Deadlines</h2>
+                  <span>Your nearest unfinished assignments.</span>
                 </div>
 
+                <button class="outline-btn" @click="goTo('/tasks')">
+                  View All →
+                </button>
+              </div>
 
-                <div class="progress-track">
+              <div v-if="loading" class="empty-state">
+                Loading assignments...
+              </div>
 
+              <div
+                v-else-if="upcomingAssignments.length === 0"
+                class="empty-state"
+              >
+                <div class="empty-icon">✓</div>
+                <h3>No upcoming deadlines</h3>
+                <p>You're all caught up. Great work!</p>
+              </div>
+
+              <div v-else class="deadline-list">
+                <div
+                  v-for="task in upcomingAssignments"
+                  :key="task.id"
+                  class="deadline-item"
+                >
                   <div
-                    class="progress-fill"
-                    :style="{
-                      width: completionPercentage + '%'
-                    }"
+                    class="priority-line"
+                    :class="priorityClass(task.priority)"
                   ></div>
 
-                </div>
-
-              </div>
-
-
-              <div class="preview-task preview-task-blue">
-
-                <div class="preview-checkbox">
-                  ✓
-                </div>
-
-                <div>
-                  <strong>
-                    Stay organized
-                  </strong>
-
-                  <small>
-                    Manage your schoolwork
-                  </small>
-                </div>
-
-              </div>
-
-
-              <div class="preview-task preview-task-yellow">
-
-                <div class="preview-checkbox">
-                  ◷
-                </div>
-
-                <div>
-                  <strong>
-                    Meet deadlines
-                  </strong>
-
-                  <small>
-                    Track important tasks
-                  </small>
-                </div>
-
-              </div>
-
-
-              <div class="preview-task preview-task-green">
-
-                <div class="preview-checkbox">
-                  ★
-                </div>
-
-                <div>
-                  <strong>
-                    Reach your goals
-                  </strong>
-
-                  <small>
-                    One task at a time
-                  </small>
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-        <!-- ==================================================
-             STATS
-        =================================================== -->
-        <section class="stats-grid">
-
-          <div class="stat-card stat-blue">
-
-            <div class="stat-icon blue-icon">
-              ▣
-            </div>
-
-            <div class="stat-content">
-
-              <span class="stat-label">
-                TOTAL ASSIGNMENTS
-              </span>
-
-              <strong class="stat-number">
-                {{ assignments.length }}
-              </strong>
-
-              <small>
-                All academic tasks
-              </small>
-
-            </div>
-
-          </div>
-
-
-          <div class="stat-card stat-yellow">
-
-            <div class="stat-icon yellow-icon">
-              ◷
-            </div>
-
-            <div class="stat-content">
-
-              <span class="stat-label">
-                PENDING
-              </span>
-
-              <strong class="stat-number">
-                {{ pendingCount }}
-              </strong>
-
-              <small>
-                Need your attention
-              </small>
-
-            </div>
-
-          </div>
-
-
-          <div class="stat-card stat-purple">
-
-            <div class="stat-icon purple-icon">
-              ↗
-            </div>
-
-            <div class="stat-content">
-
-              <span class="stat-label">
-                IN PROGRESS
-              </span>
-
-              <strong class="stat-number">
-                {{ progressCount }}
-              </strong>
-
-              <small>
-                Currently working
-              </small>
-
-            </div>
-
-          </div>
-
-
-          <div class="stat-card stat-green">
-
-            <div class="stat-icon green-icon">
-              ✓
-            </div>
-
-            <div class="stat-content">
-
-              <span class="stat-label">
-                COMPLETED
-              </span>
-
-              <strong class="stat-number">
-                {{ completedCount }}
-              </strong>
-
-              <small>
-                Great work
-              </small>
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-        <!-- ==================================================
-             MOTIVATION
-        =================================================== -->
-        <section class="motivation-banner">
-
-          <div class="motivation-icon">
-            ★
-          </div>
-
-          <div class="motivation-copy">
-
-            <strong>
-              Stay Organized. Save Time. Achieve More.
-            </strong>
-
-            <p>
-              Small progress every day leads to bigger results.
-            </p>
-
-          </div>
-
-          <div class="motivation-decoration">
-            ✦
-          </div>
-
-        </section>
-
-
-        <!-- ==================================================
-             WORKSPACE
-        =================================================== -->
-        <section class="workspace">
-
-
-          <!-- ==================================================
-               ADD / EDIT FORM
-          =================================================== -->
-          <div class="app-panel form-panel">
-
-            <div class="panel-header">
-
-              <div class="panel-heading">
-
-                <div class="panel-icon primary-panel-icon">
-                  {{ isEditing ? '✎' : '+' }}
-                </div>
-
-                <div>
-
-                  <h2>
-                    {{
-                      isEditing
-                        ? 'Edit Assignment'
-                        : 'Add Assignment'
-                    }}
-                  </h2>
-
-                  <p>
-                    {{
-                      isEditing
-                        ? 'Update your assignment details.'
-                        : 'Create a new academic task.'
-                    }}
-                  </p>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <form @submit.prevent="saveAssignment">
-
-
-              <!-- SUBJECT -->
-              <div class="form-group">
-
-                <label>
-                  Subject
-                  <span>*</span>
-                </label>
-
-                <div class="input-wrapper">
-
-                  <div class="input-icon">
-                    ▣
-                  </div>
-
-                  <ion-input
-                    v-model="form.subject"
-                  ></ion-input>
-
-                </div>
-
-              </div>
-
-
-              <!-- TITLE -->
-              <div class="form-group">
-
-                <label>
-                  Assignment Title
-                  <span>*</span>
-                </label>
-
-                <div class="input-wrapper">
-
-                  <div class="input-icon">
-                    ✎
-                  </div>
-
-                  <ion-input
-                    v-model="form.title"
-                  ></ion-input>
-
-                </div>
-
-              </div>
-
-
-              <!-- DEADLINE -->
-              <div class="form-group">
-
-                <label>
-                  Deadline
-                  <span>*</span>
-                </label>
-
-                <div class="input-wrapper">
-
-                  <div class="input-icon">
-                    ▦
-                  </div>
-
-                  <ion-input
-                    v-model="form.deadline"
-                    type="date"
-                  ></ion-input>
-
-                </div>
-
-              </div>
-
-
-              <!-- PRIORITY -->
-              <div class="form-group">
-
-                <label>
-                  Priority
-                  <span>*</span>
-                </label>
-
-                <div class="input-wrapper">
-
-                  <div class="input-icon">
-                    ⚡
-                  </div>
-
-                  <ion-select
-                    v-model="form.priority"
-                    interface="popover"
-                  >
-
-                    <ion-select-option value="Low">
-                      Low
-                    </ion-select-option>
-
-                    <ion-select-option value="Medium">
-                      Medium
-                    </ion-select-option>
-
-                    <ion-select-option value="High">
-                      High
-                    </ion-select-option>
-
-                  </ion-select>
-
-                </div>
-
-              </div>
-
-
-              <!-- CURRENT STATUS WHEN EDITING -->
-              <div
-                v-if="isEditing"
-                class="current-status-info"
-              >
-
-                <span>
-                  Current Status
-                </span>
-
-                <strong
-                  :class="
-                    statusClass(
-                      form.status
-                    )
-                  "
-                >
-                  {{ form.status }}
-                </strong>
-
-                <small>
-                  Change the status directly from the assignment card.
-                </small>
-
-              </div>
-
-
-              <!-- NOTES -->
-              <div class="form-group">
-
-                <label>
-                  Notes
-                </label>
-
-                <div class="input-wrapper textarea-wrapper">
-
-                  <div class="input-icon textarea-icon">
-                    ✎
-                  </div>
-
-                  <ion-textarea
-                    v-model="form.notes"
-                    :auto-grow="true"
-                  ></ion-textarea>
-
-                </div>
-
-              </div>
-
-
-              <!-- SAVE -->
-              <button
-                type="submit"
-                class="main-button"
-                :disabled="loading"
-              >
-
-                <span class="button-icon">
-                  {{ isEditing ? '✓' : '+' }}
-                </span>
-
-                {{
-                  isEditing
-                    ? 'Update Assignment'
-                    : 'Add Assignment'
-                }}
-
-              </button>
-
-
-              <!-- CANCEL -->
-              <button
-                v-if="isEditing"
-                type="button"
-                class="cancel-button"
-                @click="cancelEdit"
-              >
-                Cancel Editing
-              </button>
-
-            </form>
-
-          </div>
-
-
-          <!-- ==================================================
-               ASSIGNMENTS
-          =================================================== -->
-          <div class="app-panel assignments-panel">
-
-
-            <!-- PANEL HEADER -->
-            <div class="assignments-heading">
-
-              <div class="panel-heading">
-
-                <div class="panel-icon secondary-panel-icon">
-                  ☷
-                </div>
-
-                <div>
-
-                  <h2>
-                    My Assignments
-                  </h2>
-
-                  <p>
-                    View and manage your academic tasks.
-                  </p>
-
-                </div>
-
-              </div>
-
-
-              <button
-                class="refresh-button"
-                @click="loadAssignments"
-                :disabled="loading"
-              >
-                <span>↻</span>
-                Refresh
-              </button>
-
-            </div>
-
-
-            <!-- ==================================================
-                 SEARCH AND FILTER
-            =================================================== -->
-            <div class="toolbar">
-
-
-              <div class="search-control">
-
-                <span class="search-icon">
-                  ⌕
-                </span>
-
-                <input
-                  v-model="searchText"
-                  type="text"
-                  placeholder="Search assignments..."
-                />
-
-              </div>
-
-
-              <div class="filter-control">
-
-                <select
-                  v-model="statusFilter"
-                >
-
-                  <option value="All">
-                    All Status
-                  </option>
-
-                  <option value="Pending">
-                    Pending
-                  </option>
-
-                  <option value="In Progress">
-                    In Progress
-                  </option>
-
-                  <option value="Completed">
-                    Completed
-                  </option>
-
-                </select>
-
-              </div>
-
-
-              <div class="filter-control">
-
-                <select
-                  v-model="priorityFilter"
-                >
-
-                  <option value="All">
-                    All Priority
-                  </option>
-
-                  <option value="High">
-                    High Priority
-                  </option>
-
-                  <option value="Medium">
-                    Medium Priority
-                  </option>
-
-                  <option value="Low">
-                    Low Priority
-                  </option>
-
-                </select>
-
-              </div>
-
-            </div>
-
-
-            <!-- RESULT COUNT -->
-            <div
-              v-if="
-                !loading &&
-                assignments.length > 0
-              "
-              class="results-info"
-            >
-
-              Showing
-
-              <strong>
-                {{ filteredAssignments.length }}
-              </strong>
-
-              of
-
-              <strong>
-                {{ assignments.length }}
-              </strong>
-
-              assignments
-
-            </div>
-
-
-            <!-- ==================================================
-                 LOADING
-            =================================================== -->
-            <div
-              v-if="loading"
-              class="state-container"
-            >
-
-              <div class="loader"></div>
-
-              <h3>
-                Loading assignments
-              </h3>
-
-              <p>
-                Getting your latest tasks...
-              </p>
-
-            </div>
-
-
-            <!-- ==================================================
-                 EMPTY
-            =================================================== -->
-            <div
-              v-else-if="
-                filteredAssignments.length === 0
-              "
-              class="state-container"
-            >
-
-              <div class="state-icon">
-                ☷
-              </div>
-
-              <h3>
-                No assignments found
-              </h3>
-
-              <p>
-                Add a new task or change your filters.
-              </p>
-
-            </div>
-
-
-            <!-- ==================================================
-                 ASSIGNMENT CARDS
-            =================================================== -->
-            <div
-              v-else
-              class="assignment-list"
-            >
-
-              <article
-                v-for="assignment in filteredAssignments"
-                :key="assignment.id"
-                class="assignment-card"
-                :class="
-                  assignmentBorderClass(
-                    assignment.status
-                  )
-                "
-              >
-
-
-                <!-- ICON -->
-                <div class="assignment-icon">
-
-                  {{
-                    subjectIcon(
-                      assignment.subject
-                    )
-                  }}
-
-                </div>
-
-
-                <!-- CONTENT -->
-                <div class="assignment-content">
-
-
-                  <!-- TOP -->
-                  <div class="assignment-top">
-
-                    <div class="assignment-main">
-
-
-                      <!-- BADGES -->
-                      <div class="assignment-tags">
-
-                        <span class="subject-badge">
-                          {{ assignment.subject }}
-                        </span>
-
-
-                        <span
-                          class="priority-badge"
-                          :class="
-                            priorityClass(
-                              assignment.priority
-                            )
-                          "
-                        >
-
-                          <span class="priority-dot"></span>
-
-                          {{ assignment.priority }}
-
-                        </span>
-
-                      </div>
-
-
-                      <h3>
-                        {{ assignment.title }}
-                      </h3>
-
-                    </div>
-
-
-                    <span
-                      class="status-badge"
-                      :class="
-                        statusClass(
-                          assignment.status
-                        )
-                      "
-                    >
-                      {{ assignment.status }}
-                    </span>
-
-                  </div>
-
-
-                  <!-- NOTES -->
-                  <p class="assignment-notes">
-
-                    {{
-                      assignment.notes ||
-                      'No additional notes for this assignment.'
-                    }}
-
-                  </p>
-
-
-                  <!-- META -->
-                  <div class="assignment-meta">
-
-                    <span class="meta-item">
-
-                      <span class="meta-icon">
-                        ▦
+                  <div class="deadline-info">
+                    <div class="task-tags">
+                      <span class="subject-pill">
+                        {{ task.subject || 'No Subject' }}
                       </span>
 
-                      {{
-                        formatDate(
-                          assignment.deadline
-                        )
-                      }}
-
-                    </span>
-
-
-                    <span
-                      v-if="
-                        assignment.status !==
-                        'Completed'
-                      "
-                      class="deadline-badge"
-                      :class="
-                        deadlineClass(
-                          assignment.deadline
-                        )
-                      "
-                    >
-
-                      <span>
-                        ◷
-                      </span>
-
-                      {{
-                        deadlineMessage(
-                          assignment.deadline
-                        )
-                      }}
-
-                    </span>
-
-
-                    <span
-                      v-else
-                      class="completed-badge"
-                    >
-                      ✓ Finished
-                    </span>
-
-                  </div>
-
-
-                  <!-- ==================================================
-                       QUICK STATUS ACTION
-                  =================================================== -->
-                  <div class="quick-status-area">
-
-
-                    <!-- PENDING -->
-                    <button
-                      v-if="
-                        assignment.status ===
-                        'Pending'
-                      "
-                      class="quick-status-button start-task-button"
-                      :disabled="
-                        statusUpdatingId ===
-                        assignment.id
-                      "
-                      @click="
-                        updateAssignmentStatus(
-                          assignment.id,
-                          'In Progress'
-                        )
-                      "
-                    >
-
-                      <span>
-                        {{
-                          statusUpdatingId ===
-                          assignment.id
-                            ? '↻'
-                            : '▶'
-                        }}
-                      </span>
-
-                      {{
-                        statusUpdatingId ===
-                        assignment.id
-                          ? 'Updating...'
-                          : 'Start Task'
-                      }}
-
-                    </button>
-
-
-                    <!-- IN PROGRESS -->
-                    <button
-                      v-else-if="
-                        assignment.status ===
-                        'In Progress'
-                      "
-                      class="quick-status-button complete-task-button"
-                      :disabled="
-                        statusUpdatingId ===
-                        assignment.id
-                      "
-                      @click="
-                        updateAssignmentStatus(
-                          assignment.id,
-                          'Completed'
-                        )
-                      "
-                    >
-
-                      <span>
-                        {{
-                          statusUpdatingId ===
-                          assignment.id
-                            ? '↻'
-                            : '✓'
-                        }}
-                      </span>
-
-                      {{
-                        statusUpdatingId ===
-                        assignment.id
-                          ? 'Updating...'
-                          : 'Mark Complete'
-                      }}
-
-                    </button>
-
-
-                    <!-- COMPLETED -->
-                    <div
-                      v-else
-                      class="completed-actions"
-                    >
-
-                      <div class="completed-message">
-                        <span>✓</span>
-                        Task Completed
-                      </div>
-
-
-                      <button
-                        class="reopen-button"
-                        :disabled="
-                          statusUpdatingId ===
-                          assignment.id
-                        "
-                        @click="
-                          updateAssignmentStatus(
-                            assignment.id,
-                            'In Progress'
-                          )
-                        "
+                      <span
+                        class="priority-pill"
+                        :class="priorityClass(task.priority)"
                       >
-                        ↶ Reopen Task
-                      </button>
-
+                        • {{ task.priority || 'Medium' }}
+                      </span>
                     </div>
 
+                    <h3>{{ task.title || 'Untitled Assignment' }}</h3>
+
+                    <div class="deadline-meta">
+                      <span>▦ {{ formatDate(task.deadline) }}</span>
+                      <span :class="statusClass(task.status)">
+                        {{ task.status || 'Pending' }}
+                      </span>
+                    </div>
                   </div>
 
-                </div>
-
-
-                <!-- ==================================================
-                     EDIT DELETE
-                =================================================== -->
-                <div class="assignment-actions">
-
                   <button
-                    class="action-button edit-action"
-                    @click="
-                      editAssignment(
-                        assignment
-                      )
-                    "
+                    class="small-view-btn"
+                    @click="goTo('/tasks')"
                   >
-
-                    <span>
-                      ✎
-                    </span>
-
-                    <span>
-                      Edit
-                    </span>
-
+                    View
                   </button>
-
-
-                  <button
-                    class="action-button delete-action"
-                    @click="
-                      deleteAssignmentRecord(
-                        assignment.id
-                      )
-                    "
-                  >
-
-                    <span>
-                      ×
-                    </span>
-
-                    <span>
-                      Delete
-                    </span>
-
-                  </button>
-
                 </div>
-
-              </article>
-
+              </div>
             </div>
 
-          </div>
+            <!-- OVERALL PROGRESS -->
+            <div class="panel progress-panel">
+              <div class="panel-header simple">
+                <div>
+                  <p class="panel-eyebrow">YOUR PROGRESS</p>
+                  <h2>Overall Progress</h2>
+                  <span>Based on all your assignments.</span>
+                </div>
+              </div>
 
-        </section>
+              <div class="circle-wrapper">
+                <div
+                  class="progress-circle"
+                  :style="{
+                    background:
+                      'conic-gradient(#2f63ed ' +
+                      progressPercentage +
+                      '%, #e8eefb ' +
+                      progressPercentage +
+                      '%)'
+                  }"
+                >
+                  <div class="circle-inner">
+                    <strong>{{ progressPercentage }}%</strong>
+                    <span>Completed</span>
+                  </div>
+                </div>
+              </div>
 
+              <div class="progress-details">
+                <div>
+                  <span class="dot pending-dot"></span>
+                  <p>Pending</p>
+                  <strong>{{ pendingCount }}</strong>
+                </div>
 
-        <!-- ==================================================
-             FOOTER
-        =================================================== -->
-        <footer class="app-footer">
+                <div>
+                  <span class="dot progress-dot"></span>
+                  <p>In Progress</p>
+                  <strong>{{ inProgressCount }}</strong>
+                </div>
 
-          <div class="footer-brand">
-
-            <div class="footer-logo">
-              ✓
+                <div>
+                  <span class="dot completed-dot"></span>
+                  <p>Completed</p>
+                  <strong>{{ completedCount }}</strong>
+                </div>
+              </div>
             </div>
 
-            <div>
+          </section>
 
-              <strong>
-                Assignment Tracker
-              </strong>
+          <!-- ================= RECENT TASKS + QUICK ACTIONS ================= -->
+          <section class="bottom-grid">
 
-              <small>
+            <!-- RECENT TASKS -->
+            <div class="panel recent-panel">
+              <div class="panel-header">
+                <div>
+                  <p class="panel-eyebrow">LATEST ACTIVITY</p>
+                  <h2>Recent Tasks</h2>
+                  <span>Your recently added assignments.</span>
+                </div>
+
+                <button class="outline-btn" @click="goTo('/tasks')">
+                  My Tasks →
+                </button>
+              </div>
+
+              <div
+                v-if="!loading && recentAssignments.length === 0"
+                class="empty-state compact"
+              >
+                <div class="empty-icon">▣</div>
+                <h3>No assignments yet</h3>
+                <p>Create your first assignment to get started.</p>
+
+                <button class="primary-btn" @click="goTo('/add-task')">
+                  + Add Assignment
+                </button>
+              </div>
+
+              <div v-else class="recent-list">
+                <div
+                  v-for="task in recentAssignments"
+                  :key="task.id"
+                  class="recent-item"
+                >
+                  <div class="recent-icon">▣</div>
+
+                  <div class="recent-info">
+                    <div class="task-tags">
+                      <span class="subject-pill">
+                        {{ task.subject || 'No Subject' }}
+                      </span>
+
+                      <span
+                        class="priority-pill"
+                        :class="priorityClass(task.priority)"
+                      >
+                        • {{ task.priority || 'Medium' }}
+                      </span>
+                    </div>
+
+                    <h3>{{ task.title || 'Untitled Assignment' }}</h3>
+                    <p>Due {{ formatDate(task.deadline) }}</p>
+                  </div>
+
+                  <span
+                    class="status-badge"
+                    :class="statusClass(task.status)"
+                  >
+                    {{ task.status || 'Pending' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- QUICK ACTIONS -->
+            <div class="panel quick-panel">
+              <div class="panel-header simple">
+                <div>
+                  <p class="panel-eyebrow">SHORTCUTS</p>
+                  <h2>Quick Actions</h2>
+                  <span>Go directly to what you need.</span>
+                </div>
+              </div>
+
+              <div class="quick-actions">
+                <button
+                  class="quick-card quick-add"
+                  @click="goTo('/add-task')"
+                >
+                  <div class="quick-icon">＋</div>
+                  <div>
+                    <strong>Add Assignment</strong>
+                    <span>Create a new academic task</span>
+                  </div>
+                  <b>→</b>
+                </button>
+
+                <button
+                  class="quick-card quick-tasks"
+                  @click="goTo('/tasks')"
+                >
+                  <div class="quick-icon">☷</div>
+                  <div>
+                    <strong>My Tasks</strong>
+                    <span>Manage all assignments</span>
+                  </div>
+                  <b>→</b>
+                </button>
+
+                <button
+                  class="quick-card quick-subjects"
+                  @click="goTo('/subjects')"
+                >
+                  <div class="quick-icon">▤</div>
+                  <div>
+                    <strong>Subjects</strong>
+                    <span>View academic subjects</span>
+                  </div>
+                  <b>→</b>
+                </button>
+              </div>
+            </div>
+
+          </section>
+
+          <!-- FOOTER -->
+          <footer class="footer">
+            <div class="footer-brand">
+              <div class="footer-logo">✓</div>
+              <span>
+                <strong>Assignment Tracker</strong>
                 Student Productivity Dashboard
-              </small>
-
+              </span>
             </div>
 
-          </div>
+            <p>Plan • Prioritize • Progress • Succeed</p>
+          </footer>
 
+        </main>
 
-          <p>
-            Plan • Prioritize • Progress • Succeed
-          </p>
+        <!-- ================= MOBILE BOTTOM NAVIGATION ================= -->
+        <nav class="mobile-nav">
+          <button class="mobile-nav-item active" @click="goTo('/home')">
+            <span class="mobile-nav-icon">▦</span>
+            <span>Dashboard</span>
+          </button>
 
-        </footer>
+          <button class="mobile-nav-item" @click="goTo('/tasks')">
+            <span class="mobile-nav-icon">☷</span>
+            <span>Tasks</span>
+          </button>
 
+          <button class="mobile-nav-item mobile-nav-add" @click="goTo('/add-task')">
+            <span class="mobile-add-icon">＋</span>
+            <span>Add</span>
+          </button>
+
+          <button class="mobile-nav-item" @click="goTo('/subjects')">
+            <span class="mobile-nav-icon">▤</span>
+            <span>Subjects</span>
+          </button>
+        </nav>
       </div>
-
-
-      <!-- TOAST -->
-      <ion-toast
-        :is-open="toastOpen"
-        :message="toastMessage"
-        :duration="2000"
-        @didDismiss="toastOpen = false"
-      ></ion-toast>
-
     </ion-content>
   </ion-page>
 </template>
 
-
 <script setup lang="ts">
+import { computed, onMounted, ref } from 'vue';
+import { IonContent, IonPage } from '@ionic/vue';
+import { useRouter } from 'vue-router';
 
 import {
-  IonPage,
-  IonContent,
-  IonInput,
-  IonTextarea,
-  IonSelect,
-  IonSelectOption,
-  IonToast
-} from '@ionic/vue';
-
-
-import {
-  addDoc,
   collection,
-  deleteDoc,
-  doc,
   getDocs,
   orderBy,
-  query,
-  serverTimestamp,
-  updateDoc
+  query
 } from 'firebase/firestore';
 
-
-import {
-  computed,
-  onMounted,
-  reactive,
-  ref
-} from 'vue';
-
-
 import { db } from '../firebase';
-
-
-
-/* ==================================================
-   INTERFACE
-=================================================== */
 
 interface Assignment {
   id: string;
   subject: string;
   title: string;
   deadline: string;
-  status: string;
   priority: string;
-  notes: string;
+  notes?: string;
+  status: string;
+  createdAt?: any;
 }
 
+const router = useRouter();
 
+const assignments = ref<Assignment[]>([]);
+const loading = ref(true);
 
-/* ==================================================
-   STATES
-=================================================== */
+/* =========================
+   NAVIGATION
+========================= */
 
-const assignments =
-  ref<Assignment[]>([]);
-
-
-const loading =
-  ref(false);
-
-
-const isEditing =
-  ref(false);
-
-
-const editingId =
-  ref('');
-
-
-const searchText =
-  ref('');
-
-
-const statusFilter =
-  ref('All');
-
-
-const priorityFilter =
-  ref('All');
-
-
-const toastOpen =
-  ref(false);
-
-
-const toastMessage =
-  ref('');
-
-
-/*
-  Used only for the quick status button.
-
-  Example:
-  if assignment "abc123" is being updated,
-  statusUpdatingId becomes "abc123".
-
-  This prevents multiple clicks while Firebase
-  is currently updating that assignment.
-*/
-const statusUpdatingId =
-  ref('');
-
-
-
-/* ==================================================
-   FORM
-=================================================== */
-
-const form =
-  reactive({
-
-    subject: '',
-
-    title: '',
-
-    deadline: '',
-
-    status: 'Pending',
-
-    priority: 'Medium',
-
-    notes: ''
-
-  });
-
-
-
-/* ==================================================
-   TOAST
-=================================================== */
-
-const showToast = (
-  message: string
-) => {
-
-  toastMessage.value =
-    message;
-
-  toastOpen.value =
-    true;
-
+const goTo = (path: string) => {
+  router.push(path);
 };
 
-
-
-/* ==================================================
-   RESET FORM
-=================================================== */
-
-const resetForm = () => {
-
-  form.subject =
-    '';
-
-  form.title =
-    '';
-
-  form.deadline =
-    '';
-
-  form.status =
-    'Pending';
-
-  form.priority =
-    'Medium';
-
-  form.notes =
-    '';
-
-
-  isEditing.value =
-    false;
-
-
-  editingId.value =
-    '';
-
-};
-
-
-
-/* ==================================================
-   CREATE / UPDATE
-=================================================== */
-
-const saveAssignment =
-  async () => {
-
-
-    if (
-      !form.subject.trim() ||
-      !form.title.trim() ||
-      !form.deadline
-    ) {
-
-      showToast(
-        'Please complete all required fields.'
-      );
-
-      return;
-
-    }
-
-
-    try {
-
-      loading.value =
-        true;
-
-
-      /* =============================================
-         UPDATE EXISTING ASSIGNMENT
-      ============================================== */
-
-      if (
-        isEditing.value &&
-        editingId.value
-      ) {
-
-        await updateDoc(
-
-          doc(
-            db,
-            'assignments',
-            editingId.value
-          ),
-
-          {
-
-            subject:
-              form.subject.trim(),
-
-            title:
-              form.title.trim(),
-
-            deadline:
-              form.deadline,
-
-            /*
-              Status remains the existing status.
-
-              We no longer need to manually select
-              the status inside the edit form.
-
-              Quick Status buttons handle that.
-            */
-            status:
-              form.status,
-
-            priority:
-              form.priority,
-
-            notes:
-              form.notes.trim()
-
-          }
-
-        );
-
-
-        showToast(
-          'Assignment updated successfully.'
-        );
-
-      }
-
-
-      /* =============================================
-         CREATE NEW ASSIGNMENT
-      ============================================== */
-
-      else {
-
-        await addDoc(
-
-          collection(
-            db,
-            'assignments'
-          ),
-
-          {
-
-            subject:
-              form.subject.trim(),
-
-            title:
-              form.title.trim(),
-
-            deadline:
-              form.deadline,
-
-            /*
-              Every newly created assignment
-              begins as Pending.
-            */
-            status:
-              'Pending',
-
-            priority:
-              form.priority,
-
-            notes:
-              form.notes.trim(),
-
-            createdAt:
-              serverTimestamp()
-
-          }
-
-        );
-
-
-        showToast(
-          'Assignment added successfully.'
-        );
-
-      }
-
-
-      resetForm();
-
-
-      await loadAssignments();
-
-    }
-
-
-    catch (error) {
-
-      console.error(
-        'Error saving assignment:',
-        error
-      );
-
-
-      showToast(
-        'Unable to save assignment.'
-      );
-
-    }
-
-
-    finally {
-
-      loading.value =
-        false;
-
-    }
-
-  };
-
-
-
-/* ==================================================
-   READ ASSIGNMENTS
-=================================================== */
-
-const loadAssignments =
-  async () => {
-
-
-    try {
-
-      loading.value =
-        true;
-
-
-      const assignmentQuery =
-        query(
-
-          collection(
-            db,
-            'assignments'
-          ),
-
-          orderBy(
-            'createdAt',
-            'desc'
-          )
-
-        );
-
-
-      const snapshot =
-        await getDocs(
-          assignmentQuery
-        );
-
-
-      assignments.value =
-        snapshot.docs.map(
-          (document) => {
-
-
-            const data =
-              document.data();
-
-
-            return {
-
-              id:
-                document.id,
-
-              subject:
-                data.subject ?? '',
-
-              title:
-                data.title ?? '',
-
-              deadline:
-                data.deadline ?? '',
-
-              status:
-                data.status ??
-                'Pending',
-
-              priority:
-                data.priority ??
-                'Medium',
-
-              notes:
-                data.notes ?? ''
-
-            };
-
-          }
-        );
-
-    }
-
-
-    catch (error) {
-
-      console.error(
-        'Ordered query failed:',
-        error
-      );
-
-
-      /*
-        Fallback query without orderBy.
-      */
-
-      try {
-
-        const snapshot =
-          await getDocs(
-
-            collection(
-              db,
-              'assignments'
-            )
-
-          );
-
-
-        assignments.value =
-          snapshot.docs.map(
-            (document) => {
-
-
-              const data =
-                document.data();
-
-
-              return {
-
-                id:
-                  document.id,
-
-                subject:
-                  data.subject ?? '',
-
-                title:
-                  data.title ?? '',
-
-                deadline:
-                  data.deadline ?? '',
-
-                status:
-                  data.status ??
-                  'Pending',
-
-                priority:
-                  data.priority ??
-                  'Medium',
-
-                notes:
-                  data.notes ?? ''
-
-              };
-
-            }
-          );
-
-      }
-
-
-      catch (secondError) {
-
-        console.error(
-          'Loading assignments failed:',
-          secondError
-        );
-
-
-        showToast(
-          'Unable to load assignments.'
-        );
-
-      }
-
-    }
-
-
-    finally {
-
-      loading.value =
-        false;
-
-    }
-
-  };
-
-
-
-/* ==================================================
-   QUICK STATUS UPDATE
-=================================================== */
-
-const updateAssignmentStatus =
-  async (
-    assignmentId: string,
-    newStatus: string
-  ) => {
-
-
-    /*
-      Prevent another click while
-      this assignment is updating.
-    */
-
-    if (
-      statusUpdatingId.value
-    ) {
-
-      return;
-
-    }
-
-
-    try {
-
-      statusUpdatingId.value =
-        assignmentId;
-
-
-      /*
-        Update ONLY the status field.
-
-        Nothing else in the assignment
-        will be changed.
-      */
-
-      await updateDoc(
-
-        doc(
-          db,
-          'assignments',
-          assignmentId
-        ),
-
-        {
-          status:
-            newStatus
-        }
-
-      );
-
-
-      /*
-        Update local UI immediately.
-
-        This makes the app feel faster
-        without waiting for another
-        complete Firebase query.
-      */
-
-      const assignment =
-        assignments.value.find(
-          (item) =>
-            item.id ===
-            assignmentId
-        );
-
-
-      if (assignment) {
-
-        assignment.status =
-          newStatus;
-
-      }
-
-
-      /*
-        If the assignment currently
-        being edited is the same one,
-        synchronize the edit form too.
-      */
-
-      if (
-        editingId.value ===
-        assignmentId
-      ) {
-
-        form.status =
-          newStatus;
-
-      }
-
-
-      if (
-        newStatus ===
-        'In Progress'
-      ) {
-
-        showToast(
-          'Task is now in progress.'
-        );
-
-      }
-
-
-      else if (
-        newStatus ===
-        'Completed'
-      ) {
-
-        showToast(
-          'Task completed! Great work.'
-        );
-
-      }
-
-
-      else {
-
-        showToast(
-          `Status changed to ${newStatus}.`
-        );
-
-      }
-
-    }
-
-
-    catch (error) {
-
-      console.error(
-        'Status update failed:',
-        error
-      );
-
-
-      showToast(
-        'Unable to update task status.'
-      );
-
-    }
-
-
-    finally {
-
-      statusUpdatingId.value =
-        '';
-
-    }
-
-  };
-
-
-
-/* ==================================================
-   EDIT
-=================================================== */
-
-const editAssignment = (
-  assignment: Assignment
-) => {
-
-
-  form.subject =
-    assignment.subject;
-
-
-  form.title =
-    assignment.title;
-
-
-  form.deadline =
-    assignment.deadline;
-
-
-  form.status =
-    assignment.status;
-
-
-  form.priority =
-    assignment.priority;
-
-
-  form.notes =
-    assignment.notes;
-
-
-  editingId.value =
-    assignment.id;
-
-
-  isEditing.value =
-    true;
-
-
-  window.scrollTo({
-
-    top: 0,
-
-    behavior:
-      'smooth'
-
-  });
-
-};
-
-
-
-/* ==================================================
-   CANCEL EDIT
-=================================================== */
-
-const cancelEdit = () => {
-
-  resetForm();
-
-};
-
-
-
-/* ==================================================
-   DELETE
-=================================================== */
-
-const deleteAssignmentRecord =
-  async (
-    id: string
-  ) => {
-
-
-    const confirmed =
-      window.confirm(
-        'Are you sure you want to delete this assignment?'
-      );
-
-
-    if (!confirmed) {
-
-      return;
-
-    }
-
-
-    try {
-
-      loading.value =
-        true;
-
-
-      await deleteDoc(
-
-        doc(
-          db,
-          'assignments',
-          id
-        )
-
-      );
-
-
-      /*
-        If the assignment currently being
-        edited gets deleted, reset the form.
-      */
-
-      if (
-        editingId.value ===
-        id
-      ) {
-
-        resetForm();
-
-      }
-
-
-      showToast(
-        'Assignment deleted successfully.'
-      );
-
-
-      await loadAssignments();
-
-    }
-
-
-    catch (error) {
-
-      console.error(
-        'Delete failed:',
-        error
-      );
-
-
-      showToast(
-        'Unable to delete assignment.'
-      );
-
-    }
-
-
-    finally {
-
-      loading.value =
-        false;
-
-    }
-
-  };
-
-
-
-/* ==================================================
-   SEARCH + FILTER
-=================================================== */
-
-const filteredAssignments =
-  computed(() => {
-
-
-    const search =
-      searchText.value
-        .toLowerCase()
-        .trim();
-
-
-    return assignments.value.filter(
-      (assignment) => {
-
-
-        const matchesSearch =
-
-          assignment.subject
-            .toLowerCase()
-            .includes(search)
-
-          ||
-
-          assignment.title
-            .toLowerCase()
-            .includes(search)
-
-          ||
-
-          assignment.notes
-            .toLowerCase()
-            .includes(search);
-
-
-        const matchesStatus =
-
-          statusFilter.value ===
-            'All'
-
-          ||
-
-          assignment.status ===
-            statusFilter.value;
-
-
-        const matchesPriority =
-
-          priorityFilter.value ===
-            'All'
-
-          ||
-
-          assignment.priority ===
-            priorityFilter.value;
-
-
-        return (
-
-          matchesSearch &&
-
-          matchesStatus &&
-
-          matchesPriority
-
-        );
-
-      }
-    );
-
-  });
-
-
-
-/* ==================================================
-   COUNTERS
-=================================================== */
-
-const pendingCount =
-  computed(() => {
-
-    return assignments.value.filter(
-      (item) =>
-        item.status ===
-        'Pending'
-    ).length;
-
-  });
-
-
-
-const progressCount =
-  computed(() => {
-
-    return assignments.value.filter(
-      (item) =>
-        item.status ===
-        'In Progress'
-    ).length;
-
-  });
-
-
-
-const completedCount =
-  computed(() => {
-
-    return assignments.value.filter(
-      (item) =>
-        item.status ===
-        'Completed'
-    ).length;
-
-  });
-
-
-
-/* ==================================================
-   COMPLETION PERCENTAGE
-=================================================== */
-
-const completionPercentage =
-  computed(() => {
-
-
-    if (
-      assignments.value.length ===
-      0
-    ) {
-
-      return 0;
-
-    }
-
-
-    return Math.round(
-
-      (
-        completedCount.value /
-        assignments.value.length
-      )
-
-      * 100
-
-    );
-
-  });
-
-
-
-/* ==================================================
+/* =========================
    DATE
-=================================================== */
+========================= */
 
-const currentDay =
-  computed(() => {
+const today = new Date();
 
-    return new Intl.DateTimeFormat(
-
-      'en-US',
-
-      {
-        weekday:
-          'long'
-      }
-
-    ).format(
-      new Date()
-    );
-
-  });
-
-
-
-const currentDateLabel =
-  computed(() => {
-
-    return new Intl.DateTimeFormat(
-
-      'en-US',
-
-      {
-
-        month:
-          'long',
-
-        day:
-          'numeric',
-
-        year:
-          'numeric'
-
-      }
-
-    ).format(
-      new Date()
-    );
-
-  });
-
-
-
-/* ==================================================
-   FORMAT DEADLINE
-=================================================== */
-
-const formatDate = (
-  date: string
-) => {
-
-
-  if (!date) {
-
-    return 'No deadline';
-
-  }
-
-
-  return new Intl.DateTimeFormat(
-
-    'en-US',
-
-    {
-
-      month:
-        'short',
-
-      day:
-        'numeric',
-
-      year:
-        'numeric'
-
-    }
-
-  ).format(
-
-    new Date(
-      `${date}T00:00:00`
-    )
-
-  );
-
-};
-
-
-
-/* ==================================================
-   DAYS LEFT
-=================================================== */
-
-const daysUntilDeadline = (
-  deadline: string
-) => {
-
-
-  if (!deadline) {
-
-    return 0;
-
-  }
-
-
-  const end =
-    new Date(
-      `${deadline}T23:59:59`
-    );
-
-
-  const now =
-    new Date();
-
-
-  return Math.ceil(
-
-    (
-      end.getTime() -
-      now.getTime()
-    )
-
-    /
-
-    (
-      1000 *
-      60 *
-      60 *
-      24
-    )
-
-  );
-
-};
-
-
-
-/* ==================================================
-   DEADLINE MESSAGE
-=================================================== */
-
-const deadlineMessage = (
-  deadline: string
-) => {
-
-
-  const days =
-    daysUntilDeadline(
-      deadline
-    );
-
-
-  if (
-    days < 0
-  ) {
-
-    return 'Overdue';
-
-  }
-
-
-  if (
-    days === 0
-  ) {
-
-    return 'Due today';
-
-  }
-
-
-  if (
-    days === 1
-  ) {
-
-    return '1 day left';
-
-  }
-
-
-  return `${days} days left`;
-
-};
-
-
-
-/* ==================================================
-   DEADLINE STYLE
-=================================================== */
-
-const deadlineClass = (
-  deadline: string
-) => {
-
-
-  const days =
-    daysUntilDeadline(
-      deadline
-    );
-
-
-  if (
-    days < 0
-  ) {
-
-    return 'deadline-overdue';
-
-  }
-
-
-  if (
-    days <= 2
-  ) {
-
-    return 'deadline-urgent';
-
-  }
-
-
-  return 'deadline-normal';
-
-};
-
-
-
-/* ==================================================
-   STATUS STYLE
-=================================================== */
-
-const statusClass = (
-  status: string
-) => {
-
-
-  if (
-    status ===
-    'Completed'
-  ) {
-
-    return 'status-completed';
-
-  }
-
-
-  if (
-    status ===
-    'In Progress'
-  ) {
-
-    return 'status-progress';
-
-  }
-
-
-  return 'status-pending';
-
-};
-
-
-
-/* ==================================================
-   PRIORITY STYLE
-=================================================== */
-
-const priorityClass = (
-  priority: string
-) => {
-
-
-  if (
-    priority ===
-    'High'
-  ) {
-
-    return 'priority-high';
-
-  }
-
-
-  if (
-    priority ===
-    'Low'
-  ) {
-
-    return 'priority-low';
-
-  }
-
-
-  return 'priority-medium';
-
-};
-
-
-
-/* ==================================================
-   CARD STYLE
-=================================================== */
-
-const assignmentBorderClass = (
-  status: string
-) => {
-
-
-  if (
-    status ===
-    'Completed'
-  ) {
-
-    return 'card-completed';
-
-  }
-
-
-  if (
-    status ===
-    'In Progress'
-  ) {
-
-    return 'card-progress';
-
-  }
-
-
-  return 'card-pending';
-
-};
-
-
-
-/* ==================================================
-   SUBJECT ICON
-=================================================== */
-
-const subjectIcon = (
-  subject: string
-) => {
-
-
-  const value =
-    subject.toLowerCase();
-
-
-  if (
-    value.includes('cyber') ||
-    value.includes('security')
-  ) {
-
-    return '◆';
-
-  }
-
-
-  if (
-    value.includes('math')
-  ) {
-
-    return '∑';
-
-  }
-
-
-  if (
-    value.includes('research') ||
-    value.includes('capstone')
-  ) {
-
-    return '⌁';
-
-  }
-
-
-  if (
-    value.includes('web') ||
-    value.includes('program') ||
-    value.includes('java') ||
-    value.includes('code')
-  ) {
-
-    return '</>';
-
-  }
-
-
-  if (
-    value.includes('network')
-  ) {
-
-    return '◎';
-
-  }
-
-
-  if (
-    value.includes('database')
-  ) {
-
-    return '▤';
-
-  }
-
-
-  if (
-    value.includes('history')
-  ) {
-
-    return '▣';
-
-  }
-
-
-  if (
-    value.includes('science')
-  ) {
-
-    return '⚗';
-
-  }
-
-
-  return '▣';
-
-};
-
-
-
-/* ==================================================
-   ON PAGE LOAD
-=================================================== */
-
-onMounted(() => {
-
-  loadAssignments();
-
+const currentDay = today.toLocaleDateString('en-US', {
+  weekday: 'long'
 });
 
+const currentDate = today.toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric'
+});
+
+/* =========================
+   FIREBASE
+========================= */
+
+const loadAssignments = async () => {
+  loading.value = true;
+
+  try {
+    const assignmentsRef = collection(db, 'assignments');
+
+    try {
+      const q = query(
+        assignmentsRef,
+        orderBy('createdAt', 'desc')
+      );
+
+      const snapshot = await getDocs(q);
+
+      assignments.value = snapshot.docs.map((document) => ({
+        id: document.id,
+        ...(document.data() as Omit<Assignment, 'id'>)
+      }));
+    } catch {
+      /*
+        Fallback para gumana pa rin kahit may old document
+        na walang createdAt.
+      */
+      const snapshot = await getDocs(assignmentsRef);
+
+      assignments.value = snapshot.docs.map((document) => ({
+        id: document.id,
+        ...(document.data() as Omit<Assignment, 'id'>)
+      }));
+    }
+  } catch (error) {
+    console.error('Error loading assignments:', error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(() => {
+  loadAssignments();
+});
+
+/* =========================
+   STATISTICS
+========================= */
+
+const totalAssignments = computed(() => {
+  return assignments.value.length;
+});
+
+const pendingCount = computed(() => {
+  return assignments.value.filter(
+    (task) =>
+      String(task.status || '').toLowerCase() === 'pending'
+  ).length;
+});
+
+const inProgressCount = computed(() => {
+  return assignments.value.filter(
+    (task) =>
+      String(task.status || '').toLowerCase() === 'in progress'
+  ).length;
+});
+
+const completedCount = computed(() => {
+  return assignments.value.filter(
+    (task) =>
+      String(task.status || '').toLowerCase() === 'completed'
+  ).length;
+});
+
+const progressPercentage = computed(() => {
+  if (totalAssignments.value === 0) {
+    return 0;
+  }
+
+  return Math.round(
+    (completedCount.value / totalAssignments.value) * 100
+  );
+});
+
+/* =========================
+   UPCOMING DEADLINES
+========================= */
+
+const upcomingAssignments = computed(() => {
+  return assignments.value
+    .filter((task) => {
+      return (
+        String(task.status || '').toLowerCase() !== 'completed' &&
+        task.deadline
+      );
+    })
+    .sort((a, b) => {
+      return (
+        new Date(a.deadline).getTime() -
+        new Date(b.deadline).getTime()
+      );
+    })
+    .slice(0, 3);
+});
+
+/* =========================
+   RECENT TASKS
+========================= */
+
+const recentAssignments = computed(() => {
+  return assignments.value.slice(0, 4);
+});
+
+/* =========================
+   FORMATTERS
+========================= */
+
+const formatDate = (date: string) => {
+  if (!date) {
+    return 'No deadline';
+  }
+
+  const parsed = new Date(`${date}T00:00:00`);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return date;
+  }
+
+  return parsed.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+};
+
+const priorityClass = (priority: string) => {
+  switch (String(priority || '').toLowerCase()) {
+    case 'high':
+      return 'priority-high';
+
+    case 'low':
+      return 'priority-low';
+
+    default:
+      return 'priority-medium';
+  }
+};
+
+const statusClass = (status: string) => {
+  switch (String(status || '').toLowerCase()) {
+    case 'completed':
+      return 'status-completed';
+
+    case 'in progress':
+      return 'status-progress';
+
+    default:
+      return 'status-pending';
+  }
+};
 </script>
 
-
 <style scoped>
-
-/* ==================================================
-   VARIABLES
-=================================================== */
-
-.app-shell {
-
-  --primary:
-    #315ee8;
-
-  --primary-dark:
-    #2446bd;
-
-  --secondary:
-    #11867e;
-
-  --background:
-    #f4f7fb;
-
-  --surface:
-    #ffffff;
-
-  --text:
-    #1d2939;
-
-  --text-secondary:
-    #667085;
-
-  --border:
-    #dfe6ef;
-
-}
-
-
-/* ==================================================
-   GLOBAL
-=================================================== */
-
 * {
   box-sizing: border-box;
 }
 
-
 ion-content {
-  --background: #f4f7fb;
-}
-
-
-.app-shell {
-
-  width:
-    min(
-      1400px,
-      calc(100% - 36px)
-    );
-
-  min-height:
-    100vh;
-
-  margin:
-    auto;
-
-  padding:
-    24px 0 36px;
-
+  --background: #f5f8fd;
   font-family:
     Inter,
+    ui-sans-serif,
+    system-ui,
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
-    Arial,
     sans-serif;
-
-  color:
-    var(--text);
-
+  color: #17233d;
 }
 
-
-/* ==================================================
-   HEADER
-=================================================== */
-
-.app-header {
-
-  min-height:
-    80px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  gap:
-    20px;
-
-  padding:
-    12px 4px 18px;
-
+button {
+  font-family: inherit;
 }
 
-
-.brand-area {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    14px;
-
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f8fd;
 }
 
+/* =========================
+   SIDEBAR
+========================= */
 
-.brand-logo {
-
-  width:
-    50px;
-
-  height:
-    50px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  border-radius:
-    15px;
-
-  color:
-    white;
-
-  background:
-    linear-gradient(
-      135deg,
-      #294ac9,
-      #3c7df0
-    );
-
-  box-shadow:
-    0 8px 20px
-    rgba(49, 94, 232, 0.2);
-
-  font-size:
-    25px;
-
-  font-weight:
-    900;
-
+.sidebar {
+  position: sticky;
+  top: 0;
+  width: 250px;
+  min-width: 250px;
+  height: 100vh;
+  background: #ffffff;
+  border-right: 1px solid #e3e9f4;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 20;
 }
 
-
-.brand-copy h1 {
-
-  margin:
-    0;
-
-  color:
-    #1d2939;
-
-  font-size:
-    25px;
-
-  font-weight:
-    850;
-
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 42px;
 }
 
-
-.brand-copy h1 span {
-  color: var(--primary);
+.brand-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2d58dc, #3e7df3);
+  color: white;
+  font-size: 31px;
+  font-weight: 700;
+  box-shadow: 0 10px 25px rgba(47, 99, 237, 0.22);
 }
 
-
-.brand-copy p {
-
-  margin:
-    4px 0 0;
-
-  color:
-    #7a8699;
-
-  font-size:
-    11px;
-
+.brand h2 {
+  margin: 0;
+  line-height: 1.08;
+  font-size: 20px;
+  font-weight: 800;
+  color: #17233d;
 }
 
-
-.header-date {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    10px;
-
-  padding:
-    9px 13px;
-
-  border:
-    1px solid var(--border);
-
-  border-radius:
-    14px;
-
-  background:
-    white;
-
+.brand h2.blue {
+  color: #3165ea;
 }
 
-
-.date-icon {
-
-  width:
-    30px;
-
-  height:
-    30px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  border-radius:
-    9px;
-
-  color:
-    var(--primary);
-
-  background:
-    #e8efff;
-
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-
-.header-date > div:last-child {
-  display: grid;
+.nav-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #65718a;
+  border-radius: 13px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+  text-align: left;
+  transition: 0.2s ease;
 }
 
-
-.header-date span {
-
-  color:
-    var(--primary);
-
-  font-size:
-    10px;
-
-  font-weight:
-    800;
-
+.nav-item:hover {
+  background: #f2f6ff;
+  color: #2f63ed;
 }
 
-
-.header-date strong {
-
-  margin-top:
-    2px;
-
-  color:
-    #4c5b72;
-
-  font-size:
-    11px;
-
+.nav-item.active {
+  color: #2f63ed;
+  background: #eaf1ff;
 }
 
-
-/* ==================================================
-   HERO
-=================================================== */
-
-.hero-section {
-
-  min-height:
-    310px;
-
-  display:
-    grid;
-
-  grid-template-columns:
-    minmax(0, 1.45fr)
-    minmax(300px, 0.65fr);
-
-  gap:
-    44px;
-
-  align-items:
-    center;
-
-  padding:
-    38px 42px;
-
-  overflow:
-    hidden;
-
-  border:
-    1px solid #dbe4f1;
-
-  border-radius:
-    26px;
-
-  background:
-
-    radial-gradient(
-      circle at 78% 20%,
-      rgba(255, 255, 255, 0.88),
-      transparent 28%
-    ),
-
-    linear-gradient(
-      120deg,
-      #edf4ff,
-      #f1f8f8 53%,
-      #f5f2ff
-    );
-
-}
-
-
-.hero-label {
-
-  width:
-    fit-content;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    6px;
-
-  margin-bottom:
-    16px;
-
-  padding:
-    7px 11px;
-
-  border-radius:
-    8px;
-
-  color:
-    white;
-
-  background:
-    var(--secondary);
-
-  font-size:
-    10px;
-
-  font-weight:
-    850;
-
-}
-
-
-.hero-copy h2 {
-
-  margin:
-    0;
-
-  color:
-    #172033;
-
-  font-size:
-    clamp(40px, 5vw, 60px);
-
-  line-height:
-    0.98;
-
-  font-weight:
-    900;
-
-  letter-spacing:
-    -2px;
-
-}
-
-
-.hero-copy h2 span {
-
-  display:
-    block;
-
-  margin-top:
-    4px;
-
-  color:
-    var(--primary);
-
-}
-
-
-.hero-copy > p {
-
-  max-width:
-    690px;
-
-  margin:
-    20px 0 0;
-
-  color:
-    #627087;
-
-  font-size:
-    14px;
-
-  line-height:
-    1.65;
-
-}
-
-
-.hero-features {
-
-  display:
-    flex;
-
-  flex-wrap:
-    wrap;
-
-  gap:
-    8px;
-
-  margin-top:
-    22px;
-
-}
-
-
-.feature {
-
-  min-height:
-    31px;
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  gap:
-    6px;
-
-  padding:
-    6px 11px;
-
-  border-radius:
-    999px;
-
-  font-size:
-    10px;
-
-  font-weight:
-    800;
-
-}
-
-
-.blue-feature {
-  color: #3157bc;
-  background: #e4ecff;
-}
-
-
-.teal-feature {
-  color: #11715d;
-  background: #dff4eb;
-}
-
-
-.amber-feature {
-  color: #946614;
-  background: #fff0c8;
-}
-
-
-.violet-feature {
-  color: #6856aa;
-  background: #ece7ff;
-}
-
-
-/* ==================================================
-   HERO PREVIEW
-=================================================== */
-
-.hero-preview {
-
-  position:
-    relative;
-
-  min-height:
-    225px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-}
-
-
-.preview-decoration {
-
-  position:
-    absolute;
-
-  border-radius:
-    50%;
-
-  opacity:
-    0.55;
-
-}
-
-
-.decoration-one {
-
-  width:
-    190px;
-
-  height:
-    190px;
-
-  background:
-    #d9eff2;
-
-}
-
-
-.decoration-two {
-
-  width:
-    100px;
-
-  height:
-    100px;
-
-  right:
-    -20px;
-
-  bottom:
-    -20px;
-
-  background:
-    #e4defb;
-
-}
-
-
-.preview-window {
-
-  position:
-    relative;
-
-  z-index:
-    2;
-
-  width:
-    min(100%, 320px);
-
-  padding:
-    17px;
-
-  border:
-    1px solid #d5deea;
-
-  border-radius:
-    19px;
-
-  background:
-    rgba(255, 255, 255, 0.95);
-
-  box-shadow:
-    0 18px 40px
-    rgba(45, 61, 91, 0.13);
-
-}
-
-
-.preview-topbar {
-
-  display:
-    flex;
-
-  justify-content:
-    space-between;
-
-  align-items:
-    center;
-
-  margin-bottom:
-    14px;
-
-}
-
-
-.preview-topbar > div:first-child {
-  display: grid;
-}
-
-
-.preview-label {
-
-  color:
-    #8994a6;
-
-  font-size:
-    8px;
-
-  font-weight:
-    900;
-
-}
-
-
-.preview-topbar strong {
-
-  margin-top:
-    2px;
-
-  font-size:
-    14px;
-
-}
-
-
-.preview-count {
-
-  width:
-    31px;
-
-  height:
-    31px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  border-radius:
-    10px;
-
-  color:
-    white;
-
-  background:
-    var(--primary);
-
-  font-size:
-    11px;
-
-  font-weight:
-    900;
-
-}
-
-
-.preview-progress {
-
-  margin-bottom:
-    14px;
-
-  padding:
-    10px;
-
-  border-radius:
-    11px;
-
-  background:
-    #f5f7fb;
-
-}
-
-
-.preview-progress-info {
-
-  display:
-    flex;
-
-  justify-content:
-    space-between;
-
-  margin-bottom:
-    7px;
-
-  color:
-    #788497;
-
-  font-size:
-    8px;
-
-}
-
-
-.preview-progress-info strong {
-  color: var(--primary);
-}
-
-
-.progress-track {
-
-  height:
-    5px;
-
-  overflow:
-    hidden;
-
-  border-radius:
-    999px;
-
-  background:
-    #e1e6ee;
-
-}
-
-
-.progress-fill {
-
-  height:
-    100%;
-
-  border-radius:
-    inherit;
-
-  background:
-    linear-gradient(
-      90deg,
-      #315ee8,
-      #19a28d
-    );
-
-  transition:
-    width 0.3s ease;
-
-}
-
-
-.preview-task {
-
-  min-height:
-    47px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    10px;
-
-  margin-top:
-    8px;
-
-  padding:
-    8px 9px;
-
-  border-radius:
-    10px;
-
-}
-
-
-.preview-task-blue {
-  background: #edf3ff;
-}
-
-
-.preview-task-yellow {
-  background: #fff5dc;
-}
-
-
-.preview-task-green {
-  background: #e8f7f1;
-}
-
-
-.preview-checkbox {
-
-  width:
-    27px;
-
-  height:
-    27px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  border-radius:
-    8px;
-
-  background:
-    rgba(255, 255, 255, 0.85);
-
-  font-size:
-    10px;
-
-  font-weight:
-    900;
-
-}
-
-
-.preview-task > div:last-child {
-  display: grid;
-}
-
-
-.preview-task strong {
-
-  color:
-    #38475b;
-
-  font-size:
-    9px;
-
-}
-
-
-.preview-task small {
-
-  margin-top:
-    2px;
-
-  color:
-    #8290a1;
-
-  font-size:
-    7px;
-
-}
-
-
-/* ==================================================
-   STATS
-=================================================== */
-
-.stats-grid {
-
-  display:
-    grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
-  gap:
-    14px;
-
-  margin:
-    18px 0;
-
-}
-
-
-.stat-card {
-
-  min-height:
-    120px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    14px;
-
-  padding:
-    18px;
-
-  border:
-    1px solid
-    rgba(65, 82, 111, 0.07);
-
-  border-radius:
-    18px;
-
-}
-
-
-.stat-blue {
-  background: #e7eeff;
-}
-
-
-.stat-yellow {
-  background: #fff2d2;
-}
-
-
-.stat-purple {
-  background: #eee9ff;
-}
-
-
-.stat-green {
-  background: #dcf3ea;
-}
-
-
-.stat-icon {
-
-  width:
-    50px;
-
-  height:
-    50px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  border-radius:
-    15px;
-
-  background:
-    rgba(255, 255, 255, 0.75);
-
-  font-size:
-    20px;
-
-  font-weight:
-    900;
-
-}
-
-
-.blue-icon {
-  color: #315ee8;
-}
-
-
-.yellow-icon {
-  color: #bd821b;
-}
-
-
-.purple-icon {
-  color: #765dc4;
-}
-
-
-.green-icon {
-  color: #19835f;
-}
-
-
-.stat-label {
-
-  display:
-    block;
-
-  color:
-    #52627a;
-
-  font-size:
-    9px;
-
-  font-weight:
-    900;
-
-}
-
-
-.stat-number {
-
-  display:
-    block;
-
-  margin:
-    3px 0;
-
-  color:
-    #243149;
-
-  font-size:
-    29px;
-
-}
-
-
-.stat-content small {
-
-  color:
-    #7b889c;
-
-  font-size:
-    9px;
-
-}
-
-
-/* ==================================================
-   MOTIVATION
-=================================================== */
-
-.motivation-banner {
-
-  min-height:
-    82px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  gap:
-    15px;
-
-  margin-bottom:
-    18px;
-
-  padding:
-    15px 25px;
-
-  border-radius:
-    17px;
-
-  color:
-    white;
-
-  background:
-    linear-gradient(
-      110deg,
-      #294ac9,
-      #315ee8 48%,
-      #10867d
-    );
-
-}
-
-
-.motivation-icon {
-
-  width:
-    38px;
-
-  height:
-    38px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  border-radius:
-    12px;
-
-  background:
-    rgba(255, 255, 255, 0.14);
-
-}
-
-
-.motivation-copy {
+.nav-icon {
+  width: 20px;
   text-align: center;
+  font-size: 19px;
 }
 
+.sidebar-footer {
+  border-top: 1px solid #e6ebf4;
+  padding-top: 22px;
+}
 
-.motivation-copy strong {
+.sidebar-footer strong {
   font-size: 14px;
 }
 
-
-.motivation-copy p {
-
-  margin:
-    4px 0 0;
-
-  opacity:
-    0.83;
-
-  font-size:
-    10px;
-
+.sidebar-footer p {
+  margin: 7px 0 0;
+  color: #94a0b8;
+  font-size: 12px;
 }
 
+/* =========================
+   MAIN
+========================= */
 
-/* ==================================================
-   WORKSPACE
-=================================================== */
-
-.workspace {
-
-  display:
-    grid;
-
-  grid-template-columns:
-    410px
-    minmax(0, 1fr);
-
-  gap:
-    16px;
-
+.main-content {
+  flex: 1;
+  width: calc(100% - 250px);
+  padding: 38px 44px 24px;
+  overflow: hidden;
 }
 
+.top-header {
+  max-width: 1280px;
+  margin: 0 auto 26px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
 
-.app-panel {
+.eyebrow,
+.panel-eyebrow {
+  margin: 0 0 8px;
+  color: #2f63ed;
+  font-size: 12px;
+  letter-spacing: 1.4px;
+  font-weight: 900;
+}
 
-  min-width:
-    0;
+.top-header h1 {
+  margin: 0;
+  font-size: 38px;
+  letter-spacing: -1px;
+  font-weight: 900;
+}
 
-  padding:
-    22px;
+.subtitle {
+  color: #71809a;
+  margin: 8px 0 0;
+  font-size: 14px;
+}
 
-  border:
-    1px solid var(--border);
+.date-card {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #dce4f1;
+  border-radius: 16px;
+  padding: 11px 17px;
+  min-width: 190px;
+  box-shadow: 0 8px 25px rgba(37, 54, 89, 0.04);
+}
 
-  border-radius:
-    20px;
+.calendar-icon {
+  width: 36px;
+  height: 36px;
+  background: #edf3ff;
+  color: #2f63ed;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.date-card div:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-card strong {
+  color: #2f63ed;
+  font-size: 12px;
+}
+
+.date-card span {
+  color: #536078;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  max-width: 1280px;
+  min-height: 330px;
+  margin: 0 auto 20px;
+  border-radius: 27px;
+  border: 1px solid #dce5f3;
   background:
-    white;
-
-  box-shadow:
-    0 9px 26px
-    rgba(36, 52, 80, 0.05);
-
+    radial-gradient(circle at 95% 80%, rgba(171, 132, 255, 0.15), transparent 15%),
+    linear-gradient(110deg, #eef5ff 0%, #fbfefe 55%, #faf8ff 100%);
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  overflow: hidden;
 }
 
+.hero-content {
+  flex: 1;
+}
+
+.student-badge {
+  display: inline-flex;
+  padding: 8px 13px;
+  background: #149486;
+  color: #fff;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+
+.hero h2 {
+  font-size: clamp(42px, 4.2vw, 64px);
+  line-height: 0.98;
+  letter-spacing: -3px;
+  margin: 0;
+  font-weight: 900;
+  color: #17233d;
+}
+
+.hero h2 span {
+  color: #3564e9;
+}
+
+.hero-content > p {
+  margin: 22px 0;
+  max-width: 700px;
+  color: #6f7c94;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.tag {
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.blue-tag {
+  color: #2658d7;
+  background: #e3ecff;
+}
+
+.green-tag {
+  color: #087b64;
+  background: #ddf4ea;
+}
+
+.yellow-tag {
+  color: #9b6700;
+  background: #fff0c7;
+}
+
+.purple-tag {
+  color: #6950c8;
+  background: #eee6ff;
+}
+
+.hero-progress {
+  width: 310px;
+  min-width: 310px;
+  background: white;
+  border: 1px solid #dce3ef;
+  padding: 20px;
+  border-radius: 22px;
+  box-shadow: 0 18px 45px rgba(41, 55, 85, 0.09);
+}
+
+.progress-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-title small {
+  color: #8290a8;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.progress-title h3 {
+  margin: 3px 0 0;
+  font-size: 16px;
+}
+
+.task-number {
+  background: #3263e9;
+  color: white;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-weight: 900;
+}
+
+.overall-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 19px;
+  font-size: 9px;
+  color: #7e899e;
+}
+
+.overall-row strong {
+  color: #2f63ed;
+}
+
+.progress-track {
+  height: 6px;
+  background: #e7ebf3;
+  border-radius: 20px;
+  margin: 8px 0 17px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #3262ed, #16a085);
+  transition: width 0.4s ease;
+}
+
+.mini-feature {
+  padding: 10px;
+  border-radius: 12px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 9px;
+}
+
+.feature-blue {
+  background: #e9f0ff;
+}
+
+.feature-yellow {
+  background: #fff2d1;
+}
+
+.feature-green {
+  background: #e2f4ed;
+}
+
+.mini-icon {
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mini-feature div:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.mini-feature strong {
+  font-size: 10px;
+}
+
+.mini-feature span {
+  font-size: 8px;
+  color: #78869c;
+  margin-top: 2px;
+}
+
+/* =========================
+   STAT CARDS
+========================= */
+
+.stats-grid {
+  max-width: 1280px;
+  margin: 0 auto 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.stat-card {
+  min-height: 130px;
+  border: 1px solid;
+  border-radius: 21px;
+  padding: 25px 20px;
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+.total-card {
+  background: #e7efff;
+  border-color: #d7e2fa;
+}
+
+.pending-card {
+  background: #fff0c9;
+  border-color: #f3dfaa;
+}
+
+.progress-card {
+  background: #eee7ff;
+  border-color: #e1d7fb;
+}
+
+.completed-card {
+  background: #def3ea;
+  border-color: #cce8dd;
+}
+
+.stat-icon {
+  width: 49px;
+  height: 49px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23px;
+}
+
+.stat-label {
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+}
+
+.stat-card h3 {
+  margin: 4px 0;
+  font-size: 27px;
+}
+
+.stat-card p {
+  color: #75839b;
+  margin: 0;
+  font-size: 9px;
+}
+
+/* =========================
+   MOTIVATION
+========================= */
+
+.motivation-banner {
+  max-width: 1280px;
+  margin: 0 auto 20px;
+  min-height: 75px;
+  border-radius: 18px;
+  background: linear-gradient(100deg, #2d50d4, #3268eb, #0e9483);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 15px 25px;
+}
+
+.motivation-icon {
+  width: 39px;
+  height: 39px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.motivation-banner strong {
+  font-size: 14px;
+}
+
+.motivation-banner p {
+  margin: 3px 0 0;
+  font-size: 9px;
+  text-align: center;
+}
+
+.sparkle {
+  font-size: 17px;
+}
+
+/* =========================
+   PANELS
+========================= */
+
+.dashboard-grid,
+.bottom-grid {
+  max-width: 1280px;
+  margin: 0 auto 20px;
+  display: grid;
+  grid-template-columns: 1.65fr 0.85fr;
+  gap: 18px;
+}
+
+.bottom-grid {
+  grid-template-columns: 1.5fr 0.8fr;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #dce4f0;
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(35, 52, 82, 0.035);
+}
 
 .panel-header {
-  margin-bottom: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
-
-.panel-heading {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    11px;
-
+.panel-header.simple {
+  display: block;
 }
 
-
-.panel-icon {
-
-  width:
-    44px;
-
-  height:
-    44px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  border-radius:
-    13px;
-
-  color:
-    white;
-
-  font-size:
-    20px;
-
+.panel-header h2 {
+  margin: 0;
+  font-size: 21px;
 }
 
-
-.primary-panel-icon {
-
-  background:
-    linear-gradient(
-      135deg,
-      #315ee8,
-      #3b82f6
-    );
-
+.panel-header span {
+  display: block;
+  margin-top: 5px;
+  color: #8290a7;
+  font-size: 11px;
 }
 
-
-.secondary-panel-icon {
-
-  background:
-    linear-gradient(
-      135deg,
-      #10867d,
-      #15a28d
-    );
-
+.panel-eyebrow {
+  margin-bottom: 5px;
+  font-size: 9px;
 }
 
-
-.panel-heading h2 {
-
-  margin:
-    0;
-
-  color:
-    #273449;
-
-  font-size:
-    18px;
-
+.outline-btn {
+  border: 1px solid #d5dff0;
+  color: #2f63ed;
+  background: #f9fbff;
+  padding: 10px 14px;
+  border-radius: 11px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
 }
 
-
-.panel-heading p {
-
-  margin:
-    4px 0 0;
-
-  color:
-    #8590a2;
-
-  font-size:
-    10px;
-
+.outline-btn:hover {
+  background: #edf3ff;
 }
 
+/* =========================
+   DEADLINES
+========================= */
 
-/* ==================================================
-   FORM
-=================================================== */
-
-.form-group {
-  margin-bottom: 15px;
+.deadline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
 }
 
-
-.form-group label {
-
-  display:
-    block;
-
-  margin-bottom:
-    7px;
-
-  color:
-    #46556b;
-
-  font-size:
-    11px;
-
-  font-weight:
-    750;
-
+.deadline-item {
+  position: relative;
+  border: 1px solid #e0e6f0;
+  border-radius: 15px;
+  padding: 15px 15px 15px 21px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
 }
 
-
-.form-group label span {
-  color: #d64551;
+.priority-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
 }
 
-
-.input-wrapper {
-
-  min-height:
-    50px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    8px;
-
-  padding:
-    0 12px;
-
-  border:
-    1px solid #dce4ed;
-
-  border-radius:
-    12px;
-
-  background:
-    #fbfcfe;
-
-}
-
-
-.input-wrapper:focus-within {
-
-  border-color:
-    #7190ee;
-
-  background:
-    white;
-
-  box-shadow:
-    0 0 0 3px
-    rgba(49, 94, 232, 0.075);
-
-}
-
-
-.input-icon {
-
-  width:
-    22px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  color:
-    #5270cf;
-
-  font-size:
-    13px;
-
-  font-weight:
-    800;
-
-}
-
-
-.textarea-wrapper {
-
-  min-height:
-    96px;
-
-  align-items:
-    flex-start;
-
-}
-
-
-.textarea-icon {
-  margin-top: 13px;
-}
-
-
-ion-input,
-ion-select,
-ion-textarea {
-
-  width:
-    100%;
-
-  --background:
-    transparent;
-
-  --color:
-    #354258;
-
-  --placeholder-color:
-    #9da8b8;
-
-  --padding-start:
-    0;
-
-  --padding-end:
-    0;
-
-  font-size:
-    12px;
-
-}
-
-
-/* CURRENT EDITING STATUS */
-
-.current-status-info {
-
-  margin-bottom:
-    15px;
-
-  padding:
-    12px;
-
-  display:
-    flex;
-
-  flex-wrap:
-    wrap;
-
-  align-items:
-    center;
-
-  gap:
-    8px;
-
-  border:
-    1px solid #dce4ed;
-
-  border-radius:
-    12px;
-
-  background:
-    #f8faff;
-
-}
-
-
-.current-status-info > span {
-
-  color:
-    #65738a;
-
-  font-size:
-    10px;
-
-  font-weight:
-    800;
-
-}
-
-
-.current-status-info strong {
-
-  padding:
-    5px 8px;
-
-  border-radius:
-    999px;
-
-  font-size:
-    9px;
-
-}
-
-
-.current-status-info small {
-
-  width:
-    100%;
-
-  color:
-    #8995a7;
-
-  font-size:
-    8px;
-
-}
-
-
-/* ==================================================
-   BUTTONS
-=================================================== */
-
-.main-button {
-
-  width:
-    100%;
-
-  min-height:
-    48px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  gap:
-    7px;
-
-  border:
-    none;
-
-  border-radius:
-    12px;
-
-  color:
-    white;
-
-  background:
-    linear-gradient(
-      100deg,
-      #294ac9,
-      #315ee8,
-      #397bf0
-    );
-
-  font-size:
-    11px;
-
-  font-weight:
-    850;
-
-  cursor:
-    pointer;
-
-}
-
-
-.main-button:disabled {
-
-  opacity:
-    0.6;
-
-  cursor:
-    not-allowed;
-
-}
-
-
-.cancel-button {
-
-  width:
-    100%;
-
-  min-height:
-    44px;
-
-  margin-top:
-    9px;
-
-  border:
-    1px solid #dbe2ec;
-
-  border-radius:
-    11px;
-
-  color:
-    #627087;
-
-  background:
-    #f8fafc;
-
-  font-size:
-    11px;
-
-  font-weight:
-    750;
-
-}
-
-
-/* ==================================================
-   ASSIGNMENT HEADER
-=================================================== */
-
-.assignments-heading {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  gap:
-    14px;
-
-}
-
-
-.refresh-button {
-
-  min-height:
-    40px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    5px;
-
-  padding:
-    0 13px;
-
-  border:
-    1px solid #cfdaec;
-
-  border-radius:
-    10px;
-
-  color:
-    #315ee8;
-
-  background:
-    #f7f9ff;
-
-  font-size:
-    10px;
-
-  font-weight:
-    800;
-
-}
-
-
-/* ==================================================
-   TOOLBAR
-=================================================== */
-
-.toolbar {
-
-  display:
-    grid;
-
-  grid-template-columns:
-    minmax(0, 1fr)
-    165px
-    165px;
-
-  gap:
-    9px;
-
-  margin:
-    21px 0 9px;
-
-}
-
-
-.search-control {
-
-  min-height:
-    46px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    9px;
-
-  padding:
-    0 13px;
-
-  border:
-    1px solid #dce4ed;
-
-  border-radius:
-    11px;
-
-  background:
-    #fbfcfe;
-
-}
-
-
-.search-control input {
-
-  width:
-    100%;
-
-  border:
-    none;
-
-  outline:
-    none;
-
-  background:
-    transparent;
-
-  color:
-    #354258;
-
-  font-size:
-    12px;
-
-}
-
-
-.search-icon {
-  color: #6077bb;
-}
-
-
-.filter-control {
-
-  overflow:
-    hidden;
-
-  border:
-    1px solid #dce4ed;
-
-  border-radius:
-    11px;
-
-  background:
-    #fbfcfe;
-
-}
-
-
-.filter-control select {
-
-  width:
-    100%;
-
-  min-height:
-    46px;
-
-  padding:
-    0 12px;
-
-  border:
-    none;
-
-  outline:
-    none;
-
-  color:
-    #526176;
-
-  background:
-    transparent;
-
-  font-size:
-    10px;
-
-  font-weight:
-    800;
-
-}
-
-
-.results-info {
-
-  margin:
-    8px 2px 12px;
-
-  color:
-    #8b97a8;
-
-  font-size:
-    9px;
-
-}
-
-
-/* ==================================================
-   CARDS
-=================================================== */
-
-.assignment-list {
-
-  display:
-    grid;
-
-  gap:
-    11px;
-
-}
-
-
-.assignment-card {
-
-  position:
-    relative;
-
-  min-height:
-    145px;
-
-  display:
-    grid;
-
-  grid-template-columns:
-    48px
-    minmax(0, 1fr)
-    auto;
-
-  gap:
-    12px;
-
-  align-items:
-    flex-start;
-
-  padding:
-    15px;
-
-  overflow:
-    hidden;
-
-  border:
-    1px solid #e0e6ee;
-
-  border-radius:
-    15px;
-
-  background:
-    white;
-
-}
-
-
-.assignment-card::before {
-
-  content:
-    "";
-
-  position:
-    absolute;
-
-  top:
-    0;
-
-  bottom:
-    0;
-
-  left:
-    0;
-
-  width:
-    4px;
-
-}
-
-
-.card-pending::before {
-  background: #dda52d;
-}
-
-
-.card-progress::before {
-  background: #755fc0;
-}
-
-
-.card-completed::before {
-  background: #15906a;
-}
-
-
-.assignment-icon {
-
-  width:
-    43px;
-
-  height:
-    43px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  margin-top:
-    2px;
-
-  border-radius:
-    12px;
-
-  color:
-    #315ee8;
-
-  background:
-    #edf3ff;
-
-  font-size:
-    13px;
-
-  font-weight:
-    900;
-
-}
-
-
-.assignment-content {
+.deadline-info {
+  flex: 1;
   min-width: 0;
 }
 
-
-.assignment-top {
-
-  display:
-    flex;
-
-  justify-content:
-    space-between;
-
-  gap:
-    12px;
-
+.task-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-
-.assignment-tags {
-
-  display:
-    flex;
-
-  flex-wrap:
-    wrap;
-
-  gap:
-    5px;
-
-  margin-bottom:
-    5px;
-
+.subject-pill,
+.priority-pill {
+  display: inline-flex;
+  width: fit-content;
+  padding: 5px 8px;
+  border-radius: 12px;
+  font-size: 8px;
+  font-weight: 800;
 }
 
-
-.subject-badge,
-.priority-badge {
-
-  min-height:
-    21px;
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  gap:
-    5px;
-
-  padding:
-    3px 8px;
-
-  border-radius:
-    999px;
-
-  font-size:
-    8px;
-
-  font-weight:
-    850;
-
+.subject-pill {
+  color: #2f63ed;
+  background: #eaf0ff;
 }
-
-
-.subject-badge {
-
-  max-width:
-    170px;
-
-  overflow:
-    hidden;
-
-  color:
-    #315ee8;
-
-  background:
-    #e8efff;
-
-  white-space:
-    nowrap;
-
-  text-overflow:
-    ellipsis;
-
-}
-
 
 .priority-high {
-
-  color:
-    #b43c49;
-
-  background:
-    #ffe6e8;
-
+  color: #c72f49;
+  background: #ffe5e9;
 }
-
 
 .priority-medium {
-
-  color:
-    #956810;
-
-  background:
-    #fff1ca;
-
+  color: #956200;
+  background: #fff0c7;
 }
-
 
 .priority-low {
-
-  color:
-    #3e6fae;
-
-  background:
-    #e7f0ff;
-
+  color: #08765d;
+  background: #ddf5ea;
 }
 
-
-.priority-dot {
-
-  width:
-    6px;
-
-  height:
-    6px;
-
-  border-radius:
-    50%;
-
-  background:
-    currentColor;
-
+.priority-line.priority-high {
+  background: #e14d64;
 }
 
-
-.assignment-main h3 {
-
-  margin:
-    0;
-
-  color:
-    #28364c;
-
-  font-size:
-    13px;
-
-  font-weight:
-    800;
-
+.priority-line.priority-medium {
+  background: #f1b92e;
 }
 
-
-.status-badge {
-
-  min-height:
-    25px;
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  padding:
-    4px 9px;
-
-  border-radius:
-    999px;
-
-  font-size:
-    8px;
-
-  font-weight:
-    850;
-
-  white-space:
-    nowrap;
-
+.priority-line.priority-low {
+  background: #25a57e;
 }
 
+.deadline-item h3 {
+  margin: 8px 0 5px;
+  font-size: 14px;
+}
+
+.deadline-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: #7d8aa0;
+  font-size: 9px;
+}
 
 .status-pending {
-
-  color:
-    #956810;
-
-  background:
-    #fff0c8;
-
+  color: #a66a00 !important;
 }
-
 
 .status-progress {
-
-  color:
-    #684fa9;
-
-  background:
-    #eee8ff;
-
+  color: #6543d8 !important;
 }
-
 
 .status-completed {
-
-  color:
-    #197858;
-
-  background:
-    #def4ea;
-
+  color: #008265 !important;
 }
 
-
-.assignment-notes {
-
-  margin:
-    7px 0 10px;
-
-  color:
-    #7e8a9c;
-
-  font-size:
-    10px;
-
-  line-height:
-    1.45;
-
+.small-view-btn {
+  border: 1px solid #d6e0f2;
+  background: #f8faff;
+  color: #2f63ed;
+  border-radius: 10px;
+  padding: 9px 13px;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
 }
 
+/* =========================
+   CIRCLE PROGRESS
+========================= */
 
-.assignment-meta {
-
-  display:
-    flex;
-
-  flex-wrap:
-    wrap;
-
-  align-items:
-    center;
-
-  gap:
-    7px;
-
+.circle-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 15px 0 25px;
 }
 
-
-.meta-item {
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  gap:
-    5px;
-
-  color:
-    #718097;
-
-  font-size:
-    9px;
-
+.progress-circle {
+  width: 155px;
+  height: 155px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-
-.deadline-badge,
-.completed-badge {
-
-  min-height:
-    24px;
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  gap:
-    5px;
-
-  padding:
-    4px 8px;
-
-  border-radius:
-    999px;
-
-  font-size:
-    8px;
-
-  font-weight:
-    800;
-
+.circle-inner {
+  width: 122px;
+  height: 122px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
-
-.deadline-normal {
-
-  color:
-    #3f6fae;
-
-  background:
-    #e7f0ff;
-
+.circle-inner strong {
+  font-size: 29px;
+  color: #2f63ed;
 }
 
-
-.deadline-urgent {
-
-  color:
-    #a7641c;
-
-  background:
-    #fff0d7;
-
+.circle-inner span {
+  color: #8996aa;
+  font-size: 9px;
 }
 
-
-.deadline-overdue {
-
-  color:
-    #b93b48;
-
-  background:
-    #ffe6e8;
-
+.progress-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  text-align: center;
 }
 
-
-.completed-badge {
-
-  color:
-    #197858;
-
-  background:
-    #def4ea;
-
+.progress-details > div {
+  background: #f7f9fd;
+  border-radius: 12px;
+  padding: 10px 5px;
 }
 
-
-/* ==================================================
-   QUICK STATUS
-=================================================== */
-
-.quick-status-area {
-
-  margin-top:
-    13px;
-
-  padding-top:
-    11px;
-
-  border-top:
-    1px solid #edf1f5;
-
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
 }
 
-
-.quick-status-button {
-
-  min-height:
-    39px;
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  gap:
-    7px;
-
-  padding:
-    0 14px;
-
-  border:
-    none;
-
-  border-radius:
-    10px;
-
-  font-size:
-    9px;
-
-  font-weight:
-    850;
-
-  cursor:
-    pointer;
-
-  transition:
-    0.15s ease;
-
+.pending-dot {
+  background: #f1b82d;
 }
 
-
-.quick-status-button:hover {
-  transform: translateY(-1px);
+.progress-dot {
+  background: #8a68ea;
 }
 
-
-.quick-status-button:disabled {
-
-  opacity:
-    0.6;
-
-  cursor:
-    wait;
-
+.completed-dot {
+  background: #20a77d;
 }
 
-
-.start-task-button {
-
-  color:
-    #57439d;
-
-  background:
-    #eee9ff;
-
-  border:
-    1px solid #ded5fb;
-
+.progress-details p {
+  margin: 4px 0;
+  color: #8793a8;
+  font-size: 8px;
 }
 
-
-.start-task-button:hover {
-  background: #e6dfff;
+.progress-details strong {
+  font-size: 15px;
 }
 
+/* =========================
+   RECENT TASKS
+========================= */
 
-.complete-task-button {
-
-  color:
-    white;
-
-  background:
-    linear-gradient(
-      100deg,
-      #128061,
-      #1aa078
-    );
-
-  box-shadow:
-    0 5px 12px
-    rgba(23, 140, 104, 0.16);
-
+.recent-list {
+  display: flex;
+  flex-direction: column;
 }
 
-
-.completed-actions {
-
-  display:
-    flex;
-
-  flex-wrap:
-    wrap;
-
-  align-items:
-    center;
-
-  gap:
-    8px;
-
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px 0;
+  border-bottom: 1px solid #edf0f5;
 }
 
-
-.completed-message {
-
-  min-height:
-    38px;
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  gap:
-    6px;
-
-  padding:
-    0 12px;
-
-  border-radius:
-    10px;
-
-  color:
-    #197858;
-
-  background:
-    #e4f6ed;
-
-  font-size:
-    9px;
-
-  font-weight:
-    850;
-
+.recent-item:last-child {
+  border-bottom: none;
 }
 
-
-.completed-message span {
-
-  width:
-    20px;
-
-  height:
-    20px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  border-radius:
-    50%;
-
-  color:
-    white;
-
-  background:
-    #19936a;
-
+.recent-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: #edf3ff;
+  color: #2f63ed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-
-.reopen-button {
-
-  min-height:
-    38px;
-
-  padding:
-    0 11px;
-
-  border:
-    1px solid #d6dee9;
-
-  border-radius:
-    9px;
-
-  color:
-    #657287;
-
-  background:
-    #f9fafc;
-
-  font-size:
-    8px;
-
-  font-weight:
-    800;
-
-  cursor:
-    pointer;
-
+.recent-info {
+  flex: 1;
+  min-width: 0;
 }
 
-
-/* ==================================================
-   EDIT / DELETE
-=================================================== */
-
-.assignment-actions {
-
-  display:
-    flex;
-
-  gap:
-    6px;
-
-  padding-top:
-    2px;
-
+.recent-info h3 {
+  margin: 7px 0 3px;
+  font-size: 13px;
 }
 
-
-.action-button {
-
-  min-height:
-    38px;
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  gap:
-    5px;
-
-  padding:
-    0 10px;
-
-  border-radius:
-    9px;
-
-  font-size:
-    9px;
-
-  font-weight:
-    800;
-
-  cursor:
-    pointer;
-
+.recent-info p {
+  margin: 0;
+  color: #8794a9;
+  font-size: 9px;
 }
 
-
-.edit-action {
-
-  border:
-    1px solid #cbd8f1;
-
-  color:
-    #315ee8;
-
-  background:
-    #f7f9ff;
-
+.status-badge {
+  border-radius: 20px;
+  padding: 8px 11px;
+  font-size: 8px;
+  font-weight: 900;
 }
 
-
-.delete-action {
-
-  border:
-    1px solid #efcbd0;
-
-  color:
-    #c03f4d;
-
-  background:
-    #fff8f8;
-
+.status-badge.status-pending {
+  background: #fff0c7;
 }
 
-
-/* ==================================================
-   EMPTY / LOADING
-=================================================== */
-
-.state-container {
-
-  min-height:
-    300px;
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  padding:
-    25px;
-
-  border:
-    1px dashed #d8e1ec;
-
-  border-radius:
-    14px;
-
-  background:
-    #fbfcfe;
-
-  text-align:
-    center;
-
+.status-badge.status-progress {
+  background: #eee5ff;
 }
 
-
-.state-icon {
-
-  width:
-    55px;
-
-  height:
-    55px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  margin-bottom:
-    12px;
-
-  border-radius:
-    17px;
-
-  color:
-    #6680cf;
-
-  background:
-    #edf3ff;
-
+.status-badge.status-completed {
+  background: #dcf3e9;
 }
 
+/* =========================
+   QUICK ACTIONS
+========================= */
 
-.state-container h3 {
-
-  margin:
-    0;
-
-  color:
-    #536176;
-
-  font-size:
-    14px;
-
+.quick-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
 }
 
-
-.state-container p {
-
-  margin:
-    5px 0 0;
-
-  color:
-    #8a96a8;
-
-  font-size:
-    10px;
-
+.quick-card {
+  width: 100%;
+  border: 1px solid #e0e6f1;
+  border-radius: 15px;
+  background: #fbfcff;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  cursor: pointer;
+  color: #17233d;
+  transition: 0.2s ease;
 }
 
-
-.loader {
-
-  width:
-    37px;
-
-  height:
-    37px;
-
-  margin-bottom:
-    13px;
-
-  border:
-    3px solid #dce5f5;
-
-  border-top-color:
-    #315ee8;
-
-  border-radius:
-    50%;
-
-  animation:
-    spin 0.75s linear infinite;
-
+.quick-card:hover {
+  transform: translateY(-2px);
+  border-color: #b9c9ed;
+  box-shadow: 0 8px 20px rgba(47, 99, 237, 0.07);
 }
 
-
-@keyframes spin {
-
-  to {
-    transform: rotate(360deg);
-  }
-
+.quick-icon {
+  width: 39px;
+  height: 39px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
 }
 
+.quick-add .quick-icon {
+  background: #e6edff;
+  color: #2f63ed;
+}
 
-/* ==================================================
+.quick-tasks .quick-icon {
+  background: #e1f5ef;
+  color: #118e77;
+}
+
+.quick-subjects .quick-icon {
+  background: #f0e8ff;
+  color: #7252d5;
+}
+
+.quick-card > div:nth-child(2) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.quick-card strong {
+  font-size: 11px;
+}
+
+.quick-card span {
+  margin-top: 3px;
+  color: #8895aa;
+  font-size: 8px;
+}
+
+.quick-card b {
+  color: #2f63ed;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-state {
+  min-height: 190px;
+  border: 1px dashed #dce3ef;
+  border-radius: 15px;
+  background: #fafcff;
+  color: #8b97aa;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 25px;
+}
+
+.empty-state.compact {
+  min-height: 230px;
+}
+
+.empty-icon {
+  width: 43px;
+  height: 43px;
+  border-radius: 13px;
+  background: #e9f0ff;
+  color: #2f63ed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.empty-state h3 {
+  color: #27334a;
+  margin: 0 0 5px;
+  font-size: 14px;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 10px;
+}
+
+.primary-btn {
+  margin-top: 15px;
+  border: none;
+  border-radius: 11px;
+  background: #3263eb;
+  color: white;
+  padding: 11px 17px;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* =========================
    FOOTER
-=================================================== */
+========================= */
 
-.app-footer {
-
-  min-height:
-    85px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  gap:
-    20px;
-
-  padding:
-    20px 5px 0;
-
-  color:
-    #7f8a9c;
-
-  font-size:
-    9px;
-
+.footer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 4px 10px;
+  border-top: 1px solid #e5eaf3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #8794a8;
+  font-size: 9px;
 }
-
 
 .footer-brand {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    8px;
-
+  display: flex;
+  align-items: center;
+  gap: 9px;
 }
-
 
 .footer-logo {
-
-  width:
-    28px;
-
-  height:
-    28px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  border-radius:
-    8px;
-
-  color:
-    white;
-
-  background:
-    var(--primary);
-
+  width: 29px;
+  height: 29px;
+  background: #3263e9;
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.footer-brand span {
+  display: flex;
+  gap: 4px;
+}
 
-/* ==================================================
+.footer strong {
+  color: #536079;
+}
+
+/* =========================
+   MOBILE APP HEADER + BOTTOM NAV
+========================= */
+
+.mobile-brand-header,
+.mobile-nav {
+  display: none;
+}
+
+/* =========================
    TABLET
-=================================================== */
+========================= */
 
 @media (max-width: 1100px) {
-
-  .workspace {
-
-    grid-template-columns:
-      360px
-      minmax(0, 1fr);
-
+  .main-content {
+    padding: 30px 25px;
   }
 
-
-  .toolbar {
-
-    grid-template-columns:
-      1fr 1fr;
-
+  .hero {
+    gap: 25px;
+    padding: 32px;
   }
-
-
-  .search-control {
-
-    grid-column:
-      1 / -1;
-
-  }
-
-
-  .assignment-card {
-
-    grid-template-columns:
-      45px
-      minmax(0, 1fr);
-
-  }
-
-
-  .assignment-actions {
-
-    grid-column:
-      1 / -1;
-
-    justify-content:
-      flex-end;
-
-  }
-
-}
-
-
-@media (max-width: 900px) {
-
-  .hero-section {
-
-    grid-template-columns:
-      1fr;
-
-  }
-
-
-  .hero-preview {
-
-    max-width:
-      400px;
-
-    width:
-      100%;
-
-    margin:
-      auto;
-
-  }
-
 
   .stats-grid {
-
-    grid-template-columns:
-      repeat(2, 1fr);
-
+    grid-template-columns: repeat(2, 1fr);
   }
 
-
-  .workspace {
-
-    grid-template-columns:
-      1fr;
-
+  .dashboard-grid,
+  .bottom-grid {
+    grid-template-columns: 1fr;
   }
-
-
-  .toolbar {
-
-    grid-template-columns:
-      1fr 1fr;
-
-  }
-
 }
 
-
-/* ==================================================
+/* =========================
    MOBILE
-=================================================== */
+========================= */
 
-@media (max-width: 650px) {
-
-  .app-shell {
-
-    width:
-      calc(100% - 18px);
-
-    padding:
-      10px 0 24px;
-
+@media (max-width: 760px) {
+  .dashboard {
+    display: block;
+    min-height: 100vh;
   }
 
-
-  /* HEADER */
-
-  .app-header {
-
-    min-height:
-      63px;
-
-    padding:
-      6px 1px 10px;
-
+  /* Hide the desktop sidebar completely on phones. */
+  .sidebar {
+    display: none;
   }
 
+  /* Simple, consistent app header. */
+  .mobile-brand-header {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 66px;
+    padding: 11px 14px;
+    background: rgba(255, 255, 255, 0.98);
+    border-bottom: 1px solid #e1e7f1;
+    box-shadow: 0 4px 14px rgba(35, 52, 82, 0.035);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
 
-  .brand-area {
+  .mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mobile-brand-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #2d58dc, #3e7df3);
+    color: #fff;
+    font-size: 24px;
+    font-weight: 800;
+    box-shadow: 0 8px 18px rgba(47, 99, 237, 0.2);
+  }
+
+  .mobile-brand strong {
+    color: #17233d;
+    font-size: 16px;
+    font-weight: 900;
+  }
+
+  .main-content {
+    width: 100%;
+    padding: 20px 14px 105px;
+  }
+
+  .top-header {
+    display: block;
+  }
+
+  .top-header h1 {
+    font-size: 30px;
+  }
+
+  .date-card {
+    margin-top: 15px;
+    width: fit-content;
+  }
+
+  .hero {
+    display: block;
+    padding: 26px 20px;
+    border-radius: 20px;
+  }
+
+  .hero h2 {
+    font-size: 42px;
+    letter-spacing: -2px;
+  }
+
+  .hero-progress {
+    width: 100%;
+    min-width: 0;
+    margin-top: 28px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
     gap: 9px;
   }
 
-
-  .brand-logo {
-
-    width:
-      42px;
-
-    height:
-      42px;
-
-    border-radius:
-      12px;
-
-  }
-
-
-  .brand-copy h1 {
-
-    font-size:
-      18px;
-
-  }
-
-
-  .brand-copy p {
-
-    font-size:
-      8px;
-
-  }
-
-
-  .header-date {
-    display: none;
-  }
-
-
-  /* HERO */
-
-  .hero-section {
-
-    min-height:
-      auto;
-
-    gap:
-      24px;
-
-    padding:
-      24px 19px;
-
-    border-radius:
-      19px;
-
-  }
-
-
-  .hero-copy h2 {
-
-    font-size:
-      clamp(
-        34px,
-        11vw,
-        45px
-      );
-
-    letter-spacing:
-      -1.5px;
-
-  }
-
-
-  .hero-copy > p {
-
-    margin-top:
-      14px;
-
-    font-size:
-      11px;
-
-  }
-
-
-  .hero-features {
-
-    margin-top:
-      16px;
-
-  }
-
-
-  .feature {
-
-    min-height:
-      29px;
-
-    padding:
-      5px 9px;
-
-    font-size:
-      8px;
-
-  }
-
-
-  .hero-preview {
-
-    min-height:
-      190px;
-
-  }
-
-
-  .preview-window {
-
-    width:
-      min(100%, 300px);
-
-  }
-
-
-  /* STATS */
-
-  .stats-grid {
-
-    grid-template-columns:
-      1fr 1fr;
-
-    gap:
-      9px;
-
-    margin:
-      12px 0;
-
-  }
-
-
   .stat-card {
-
-    min-height:
-      102px;
-
-    padding:
-      12px;
-
-    gap:
-      9px;
-
-    border-radius:
-      15px;
-
+    min-height: 115px;
+    padding: 16px 12px;
+    gap: 10px;
   }
-
 
   .stat-icon {
-
-    width:
-      40px;
-
-    height:
-      40px;
-
-    font-size:
-      16px;
-
+    width: 39px;
+    height: 39px;
   }
 
-
-  .stat-label {
-    font-size: 7px;
-  }
-
-
-  .stat-number {
+  .stat-card h3 {
     font-size: 23px;
   }
 
-
-  .stat-content small {
-    font-size: 7px;
-  }
-
-
-  /* MOTIVATION */
-
   .motivation-banner {
-
-    min-height:
-      70px;
-
-    justify-content:
-      flex-start;
-
-    padding:
-      12px 14px;
-
+    justify-content: flex-start;
   }
 
+  .motivation-banner strong {
+    font-size: 11px;
+  }
 
-  .motivation-copy {
+  .motivation-banner p {
     text-align: left;
   }
 
-
-  .motivation-copy strong {
-    font-size: 10px;
+  .panel {
+    padding: 18px 15px;
   }
 
-
-  .motivation-copy p {
-    font-size: 8px;
+  .panel-header {
+    align-items: flex-start;
   }
 
-
-  .motivation-decoration {
-    display: none;
+  .deadline-item,
+  .recent-item {
+    align-items: flex-start;
   }
 
-
-  /* PANEL */
-
-  .app-panel {
-
-    padding:
-      17px;
-
-    border-radius:
-      17px;
-
+  .small-view-btn {
+    padding: 7px 9px;
   }
-
-
-  .panel-icon {
-
-    width:
-      40px;
-
-    height:
-      40px;
-
-  }
-
-
-  .panel-heading h2 {
-    font-size: 16px;
-  }
-
-
-  /* TOOLBAR */
-
-  .toolbar {
-
-    grid-template-columns:
-      1fr 1fr;
-
-  }
-
-
-  .search-control {
-
-    grid-column:
-      1 / -1;
-
-    min-height:
-      48px;
-
-  }
-
-
-  .filter-control select {
-
-    min-height:
-      48px;
-
-  }
-
-
-  /* ASSIGNMENT CARD */
-
-  .assignment-card {
-
-    grid-template-columns:
-      42px
-      minmax(0, 1fr);
-
-    padding:
-      13px;
-
-  }
-
-
-  .assignment-icon {
-
-    width:
-      40px;
-
-    height:
-      40px;
-
-  }
-
-
-  .assignment-actions {
-
-    grid-column:
-      1 / -1;
-
-    width:
-      100%;
-
-    padding-top:
-      10px;
-
-    border-top:
-      1px solid #edf1f5;
-
-  }
-
-
-  .action-button {
-
-    min-height:
-      43px;
-
-    padding:
-      0 14px;
-
-  }
-
-
-  /* QUICK STATUS */
-
-  .quick-status-button {
-
-    width:
-      100%;
-
-    min-height:
-      46px;
-
-    font-size:
-      10px;
-
-  }
-
-
-  .completed-actions {
-
-    display:
-      grid;
-
-    grid-template-columns:
-      1fr;
-
-  }
-
-
-  .completed-message,
-  .reopen-button {
-
-    width:
-      100%;
-
-    min-height:
-      44px;
-
-    justify-content:
-      center;
-
-  }
-
-
-  /* FOOTER */
-
-  .app-footer {
-
-    flex-direction:
-      column;
-
-    align-items:
-      flex-start;
-
-    justify-content:
-      center;
-
-    gap:
-      8px;
-
-  }
-
-}
-
-
-/* ==================================================
-   SMALL PHONES
-=================================================== */
-
-@media (max-width: 430px) {
-
-  .app-shell {
-
-    width:
-      calc(100% - 14px);
-
-  }
-
-
-  .hero-section {
-
-    padding:
-      21px 16px;
-
-  }
-
-
-  .hero-copy h2 {
-
-    font-size:
-      35px;
-
-  }
-
-
-  .stats-grid {
-
-    grid-template-columns:
-      1fr 1fr;
-
-  }
-
-
-  .stat-card {
-
-    min-height:
-      98px;
-
-    flex-direction:
-      column;
-
-    align-items:
-      flex-start;
-
-    justify-content:
-      center;
-
-  }
-
-
-  .stat-icon {
-
-    width:
-      34px;
-
-    height:
-      34px;
-
-  }
-
-
-  .toolbar {
-
-    grid-template-columns:
-      1fr;
-
-  }
-
-
-  .search-control {
-
-    grid-column:
-      auto;
-
-  }
-
-
-  .assignment-top {
-
-    flex-direction:
-      column;
-
-    align-items:
-      flex-start;
-
-  }
-
 
   .status-badge {
-
-    align-self:
-      flex-start;
-
+    padding: 6px 8px;
   }
 
-
-  .assignment-actions {
-
-    display:
-      grid;
-
-    grid-template-columns:
-      1fr 1fr;
-
+  .footer {
+    display: block;
+    text-align: center;
   }
 
-
-  .action-button {
-
-    width:
-      100%;
-
+  .footer-brand {
+    justify-content: center;
   }
 
+  .footer > p {
+    margin-top: 12px;
+  }
+
+  /* Same fixed bottom navigation used throughout the mobile app. */
+  .mobile-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: end;
+    min-height: 72px;
+    padding: 7px 8px calc(7px + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.98);
+    border-top: 1px solid #dfe6f2;
+    box-shadow: 0 -7px 22px rgba(30, 45, 75, 0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .mobile-nav-item {
+    min-width: 0;
+    min-height: 55px;
+    border: none;
+    border-radius: 11px;
+    background: transparent;
+    color: #7b879b;
+    padding: 5px 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    font-size: 9px;
+    font-weight: 800;
+  }
+
+  .mobile-nav-item.active {
+    color: #2f63ed;
+  }
+
+  .mobile-nav-icon {
+    font-size: 17px;
+    line-height: 1;
+  }
+
+  .mobile-nav-add {
+    overflow: visible;
+  }
+
+  .mobile-add-icon {
+    width: 38px;
+    height: 38px;
+    margin-top: -22px;
+    margin-bottom: 1px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #3263eb;
+    color: #fff;
+    font-size: 23px;
+    font-weight: 500;
+    box-shadow: 0 7px 17px rgba(47, 99, 237, 0.3);
+  }
 }
 
-
-/* ==================================================
+/* =========================
    VERY SMALL PHONE
-=================================================== */
+========================= */
 
-@media (max-width: 350px) {
+@media (max-width: 420px) {
+  .main-content {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .hero {
+    padding: 22px 16px;
+  }
+
+  .hero h2 {
+    font-size: 36px;
+  }
 
   .stats-grid {
-
-    grid-template-columns:
-      1fr;
-
+    grid-template-columns: 1fr;
   }
-
 
   .stat-card {
-
-    min-height:
-      85px;
-
-    flex-direction:
-      row;
-
-    align-items:
-      center;
-
+    min-height: 95px;
   }
 
-
-  .hero-copy h2 {
-
-    font-size:
-      31px;
-
+  .hero-tags {
+    gap: 6px;
   }
 
+  .tag {
+    font-size: 9px;
+  }
+
+  .progress-details {
+    grid-template-columns: 1fr;
+  }
+
+  .deadline-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .footer-brand span {
+    flex-direction: column;
+  }
 }
-
 </style>
