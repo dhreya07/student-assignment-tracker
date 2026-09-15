@@ -726,6 +726,7 @@ button {
   display: flex;
   min-height: 100vh;
   background: #f5f8fd;
+  color: #17233d;
 }
 
 /* =========================
@@ -868,6 +869,7 @@ button {
   font-size: 38px;
   letter-spacing: -1px;
   font-weight: 900;
+  color: #17233d;
 }
 
 .subtitle {
@@ -1030,6 +1032,7 @@ button {
 .progress-title h3 {
   margin: 3px 0 0;
   font-size: 16px;
+  color: #17233d;
 }
 
 .task-number {
@@ -1100,6 +1103,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #2f63ed;
 }
 
 .mini-feature div:last-child {
@@ -1109,6 +1113,7 @@ button {
 
 .mini-feature strong {
   font-size: 10px;
+  color: #17233d;
 }
 
 .mini-feature span {
@@ -1169,17 +1174,20 @@ button {
   align-items: center;
   justify-content: center;
   font-size: 23px;
+  color: #2f63ed;
 }
 
 .stat-label {
   font-size: 9px;
   font-weight: 900;
   letter-spacing: 0.4px;
+  color: #536078;
 }
 
 .stat-card h3 {
   margin: 4px 0;
   font-size: 27px;
+  color: #17233d;
 }
 
 .stat-card p {
@@ -1270,6 +1278,7 @@ button {
 .panel-header h2 {
   margin: 0;
   font-size: 21px;
+  color: #17233d;
 }
 
 .panel-header span {
@@ -1385,6 +1394,7 @@ button {
 .deadline-item h3 {
   margin: 8px 0 5px;
   font-size: 14px;
+  color: #17233d;
 }
 
 .deadline-meta {
@@ -1498,6 +1508,7 @@ button {
 
 .progress-details strong {
   font-size: 15px;
+  color: #17233d;
 }
 
 /* =========================
@@ -1541,6 +1552,7 @@ button {
 .recent-info h3 {
   margin: 7px 0 3px;
   font-size: 13px;
+  color: #17233d;
 }
 
 .recent-info p {
@@ -1633,6 +1645,7 @@ button {
 
 .quick-card strong {
   font-size: 11px;
+  color: #17233d;
 }
 
 .quick-card span {
