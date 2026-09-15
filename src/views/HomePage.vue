@@ -1958,19 +1958,20 @@ button {
 
   .mobile-nav-item {
     min-width: 0;
-    min-height: 55px;
+    min-height: 58px;
     border: none;
     border-radius: 11px;
     background: transparent;
-    color: #7b879b;
+    color: #667085;
     padding: 5px 2px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: 5px;
     cursor: pointer;
-    font-size: 9px;
+    font-family: inherit;
+    font-size: 12px;
     font-weight: 800;
   }
 
@@ -1979,7 +1980,9 @@ button {
   }
 
   .mobile-nav-icon {
-    font-size: 17px;
+    display: block;
+    font-size: 24px;
+    font-weight: 900;
     line-height: 1;
   }
 
