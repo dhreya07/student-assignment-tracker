@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'student-assignment-tracker',
+  appId: 'com.student.assignmenttracker',
+  appName: 'Student Assignment Tracker',
   webDir: 'dist'
 };
 
